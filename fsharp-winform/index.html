@@ -1,0 +1,885 @@
+﻿<!DOCTYPE html dir="rtl">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link href="fsharp.css" type="text/css" rel="stylesheet" />
+  
+    <title></title>
+    <style type="text/css">
+      .auto-style1 {
+        font-family: "Courier New";
+        color: black;
+      }
+    </style>
+</head>
+<body>
+
+
+
+  <center>
+  <img alt="" src="sky.jpg" />
+  <div class="div-article">
+<img alt="" src="IHeartFsharp160.png" />
+<h1>تعرّف على <span dir="ltr">F#</span> عمليا</h1>
+<p>هذه المقالة محاولة للتقرب من مفاهيم البرمجة الدالّية عموما والبرمجة بلغة <span dir="ltr">F#</span> خصوصا. مدخلنا في ذلك إنشاء برنامج ويندوز مكتبي بسيط بإستخدام عناصر واجهة الاستخدام Windows Forms في بيئة .Net ومن خلاله سنرى ماذا تعني مفاهيم ومصطلحات مثل Immutability و Pattern matching و Functional programming و Recursive function و Type inference و Lambda وغيرها من المفاهيم.</p>
+
+<p>سنتعرّف أيضا عن كيفية دعم <span dir="ltr">F#</span> للمذاهب paradigm البرمجية غير الدالّية مثل المنحى للكائن Object Oriented والأسلوب الحتمي / الإجرائي imperative/ procedural وكيفية استخدامها للتعامل مع مكتبات بيئة .Net </p>
+
+<p>في هذه المقالة سأفترض بأن لديك إلمام عاما بالبرمجة، وأنك ستستخدم Visual Studio .</p>
+
+<h2>إنشاء تطبيق مكتبي لويندوز باستخدام مكتبة Windows Forms</h2>
+
+<p>تحتوي نافذة برنامجنا على مربعي كتابة، يقوم المستخدم بكتابة نصّ في إحداها، ويتولّى البرنامج تحويل هذا النص إلى معكوسه في المربع الثاني. كما يحتوي على زرّ الذي سينادي على الدالّة المسؤولة على تحويل النص وعرضه. أيضا تحوي مكون ملصق label لعرض قيمة المفتاح التي يتم الضغط عليه في لوحة المفاتيح. هذا بالإضافة إلى لائحة أوامر.</p>
+  
+<P>الشكل النهائي للبرنامج سيكون كالتالي:</P>
+
+  <center><img alt="" src="1.png" /></center>
+
+  <p>الخطوات كالتالي:</p>
+
+  <ul>
+   <li>نقوم بإنشاء مشروع جديد من نوع Console من خلال الأمر <span dir="ltr">File > New > Project</span>.</li>
+   <li> من ضمن قوالب Templates مشروعات <span dir="ltr">Visual F#</span> ؛ نختار قالب Console Application </li>
+   <li>نحدد إسم المشروع ليكون WinFormProj ثم الضغط على موافق.</li>
+  </ul>
+
+  <center><img alt="" src="2.png" /></center>
+  <p>يقوم فيجوال ستوديو بإنشاء ملفات المشروع .</p>
+
+  <center><img alt="" src="3.png" /></center>
+
+  <p>نقوم بتغيير خصائص المشروع من خلال الأمر <span dir="ltr">Project > WinFormProj Properties..</span>  حيث ستظهر نافذة خصائص المشروع:</p>
+  <center><img alt="" src="4.png" /></center>
+
+  <p>في خانة Output type  نختار Windows Application</p>
+  <p>ثم نقوم بحفظ التغيير. (الأمر Save Selected Item) وغلق نافذة خصائص المشروع. </p>
+
+  <p>نضيف مرجعيات References للتجميعات assemblies التي تتيح لنا بناء تطبيق ويندوز، وذلك بأن نستدعي شاشة المرجعيات من خلال لائحة الأوامر Project > Add References..</p>
+  <center><img alt="" src="5.png" /></center>
+
+  <p>المرجعيات تندرج تحت مجموعة من التقسيمات، نأتي للتقسيم Framework، سنجد قائمة طويلة من التجميعات، منها ما تم اختياره مسبقا. ما يهمنا إضافته الآن:</p>
+  <ul><li>System.Drawing</li>
+    <li>System.Windows.Forms</li>
+    </ul>
+  <p>ثم نضغط موافق.</p>
+  <p>لنتأكد من سلامة خطواتنا السابقة وأننا قمنا بما يلزم؛ نقوم بإنشاء نموذج Form بسيط.</p>
+
+  <p>نأتي للملف Program.fs ونعيد صياغة محتوياته لتكون كالتالي:</p>
+  <center><img alt="" src="6.png" /></center>
+
+<p>(الكود)</p>
+    <div class="div-code">
+<pre style="background:white;">
+<span style="color:blue;">open</span>&nbsp;System
+<span style="color:blue;">open</span>&nbsp;System.Windows.Forms
+ 
+<span style="color:blue;">module</span>&nbsp;Program&nbsp;=
+ 
+  <span style="color:blue;">type</span>&nbsp;MainForm()&nbsp;=
+    <span style="color:blue;">inherit</span>&nbsp;Form()
+
+  <span style="color:blue;">let</span>&nbsp;myForm&nbsp;=&nbsp;<span style="color:blue;">new</span>&nbsp;MainForm()
+ 
+  <span style="color:#2b91af;">Application</span>.EnableVisualStyles()&nbsp;
+  [&lt;<span style="color:#2b91af;">STAThread</span>&gt;]
+  [&lt;<span style="color:#2b91af;">EntryPoint</span>&gt;]
+  <span style="color:#2b91af;">Application</span>.Run&nbsp;myForm
+  <span style="color:green;">//Application.Run(new&nbsp;MainForm())</span>
+</pre>
+  </div>
+
+
+<p>في الكود السابق قمنا بالتغييرات الأساسية التالية:</p>
+<ul style="list-style-type: decimal">
+<li>إضافة أمر open للإشارة للتجميعة System.Windows.Forms </li>
+<li>تعريف نوع (صنفية/ class) باسم MainForm بالاشتقاق من الصنفية Form (والتي هي جزء من &nbsp;System.Windows.Forms)</li>
+<li>استحداث نموذج/نافذة أسميناها myForm من نوع MainForm. </li>
+<li>الطلب من التطبيق تشغيل النافذة myForm . ونلاحظ أن هذه التعليمة أو التعبير يعلوها سمة attribute تحددها كنقطة انطلاق [&lt;EntryPoint&gt;] للبرنامج.</li>
+<li>التعليمة <span dir = "ltr">Application.EnableVisualStyles()</span> لتفعيل المؤثرات المحسّنة لعناصر واجهة الاستخدام في النوافذ، ويمكن حذفها لملاحظة الفرق.</li>
+<li>السمة [&lt;STAThread&gt;] لتمكين استخدام أي كائن نوع COM ، بعض مكونات نظام التشغيل مثل مربع حوار OpenFileDialog لايمكنك استدعاؤها مالم يتم تحديد أن التطبيق الحالي يتم تشغيله في مسار single-threaded apartment .</li>
+</ul>
+<p>ملاحظة: يمكن دمج التعبيرين 3 و 4 في تعبير واحد مركّب كما هو واضح في السطر الأخير المجمد.</p>
+      
+<p>نقوم الآن بتشغيل البرنامج (F5) للتأكد من سلامة خطواتنا السابقة.</p>
+<p>عند تنفيذ أمر التشغيل، قد تظهر نافذة حوار تفيد بأنه قد طرأ تغيير على المشروع وتسأل عمّ إذا كنا نرغب في إعادة بنائه  قبل تشغيله، نجيب بنعم.</p> 
+<center><img alt="" src="7.png" /></center>
+<p>عند اشتغال البرنامج يفترض أن تظهر نافذة النموذج الذي أنشأناها. النافذة تأتي بمواصفاتها الافتراضية فهي اعتيادية قابلة للتحريك والتحجيم، وهي الآن خالية من أية عناصر.</p>
+
+<center><img alt="" src="8.png" /></center>
+
+<h3>إنشاء ملف خاص بالنموذج</h3>
+<p>حتى الآن قمنا بالخطوات الأساسية لإنشاء مشروع برنامج ويندوز. </p>
+<p>الآن نحتاج إلى إضافة بعض العناصر أو المتحكمات لنافذة النموذج حتى يكون لبرنامجنا معنى،
+ولكن قبل ذلك لو لاحظت؛ فإن التعليمات الخاصة بإنشاء النموذج MainForm موجودة داخل الملف 
+Program.fs ، هنا يستحسن أن نفصل التعليمات الخاصة بإنشاء النموذج ونضعها في ملف منفصل 
+خاص به. بهذا نضمن أن ملف Program.fs يحوي فقط التعليمات الخاصة بتشغيل البرنامج، بينما 
+تكون التعليمات المتعلقة بإنشاء النموذج وعناصره في ملف آخر.</p>
+
+<p>لإضافة ملف جديد نأتي لعنصر المشروع ومن لائحة الأوامر المنبثقة منه نختار الأمر: </p>
+<p>Add > New Item..</p>
+
+<center><img alt="" src="9.png" /></center>
+
+<p>تظهر نافذة إضافة عنصر ، ومن عناصر Visual F# Items نختار Source File، ونحدد اسم الملف ب MainForm.fs ونضغط موافق. </p>
+
+<center><img alt="" src="10.png" /></center>
+<p>الملف الجديد سينظم إلى قائمة ملفات المشروع وسيكون في آخر القائمة.</p>
+<center><img alt="" src="11.png" /></center>
+
+<p>ما نريد فعله الآن هو وضع التعريفات الخاصة بإنشاء النافذة ومكوناتها في الملف الخاص MainForm.fs الذي أنشأناه قبل قليل، وأن يتم إستدعاء هذه النافذه من ملف Program.fs والذي هو واضح أنه الملف الأساسي لإنطلاق البرنامج .</p>
+
+
+
+<p>لكن قبل ذلك؛ يجب أن نلاحظ أن ملف Program.fs (الذي يحوي الدالّة التي تم تزيينها بالخاصية EntryPoint) يجب أن يكون آخر ملف في ترتيب ملفات مشروعنا، حتى يتمكن من رؤية تعريف النموذج في ملف MainForm.fs . (سوف نشرح ذلك بعد قليل) لذلك وجب نقل موضع الملف MainForm.fs وذلك باستدعاء لائحة الأومر المنبثقة منه وتنفيذ الأمر Move Up ووضعه قبل ملف Program.fs .</p>
+
+<center><img alt="" src="12.png" /></center>
+<p>وبذلك يكون ترتيب الملفات كما في الشكل التالي:</p>
+<center><img alt="" src="13.png" /></center>
+<p>ننقل تعريف النموذج إلى ملف MainForm.fs ، وقبلها نضيف بعض المرجعيات التي سيحتاجها تموذج النافذة، بحيث تكون محتويات الملفّ كالتالي:</p>
+<div class="div-code">
+<pre style="color:black;background:white;">
+<span style="color:blue;">module</span>&nbsp;MainForm&nbsp;
+
+<span style="color:blue;">open</span>&nbsp;System
+<span style="color:blue;">open</span>&nbsp;System.Drawing
+<span style="color:blue;">open</span>&nbsp;System.Windows.Forms
+ 
+&nbsp;&nbsp;<span style="color:blue;">type</span>&nbsp;MainForm()&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:blue;">inherit</span>&nbsp;Form()
+</pre>
+</div>
+<center><img alt="" src="14.png" /></center>
+
+<p>نقوم بتعديل محتويات ملف Program.fs كالتالي:</p>
+
+<div class="div-code">
+<pre style="font-family:Consolas;color:black;background:white;"><span style="color:blue;">open</span>&nbsp;System
+<span style="color:blue;">open</span>&nbsp;System.Windows.Forms
+<span style="color:blue;">open</span>&nbsp;MainForm
+ 
+<span style="color:blue;">module</span>&nbsp;Program&nbsp;=
+ 
+&nbsp;&nbsp;<span style="color:blue;">let</span>&nbsp;myForm&nbsp;=&nbsp;<span style="color:blue;">new</span>&nbsp;MainForm()
+&nbsp;
+&nbsp;&nbsp;[&lt;EntryPoint&gt;]
+&nbsp;&nbsp;Application.Run&nbsp;myForm
+&nbsp;&nbsp;<span style="color:green;">//Application.Run(new&nbsp;MainForm())</span>
+</pre>
+</div>
+<center><img alt="" src="15.png" /></center>
+
+<p>هنا أضفنا إشارة إلى التركيبة module المسمى MainForm والموجود في ملف MainForm.fs والتي بها تعريف النموذج MainForm ، وأبقينا فقط على تعليمات إنشاء النموذج وتشغيله.</p>
+<center>
+<div class="div-note">
+<h3>ترتيب الملفات في <span dir="ltr">F#</span></h3>
+<p>يتم فحص وتقييم evaluate الأنواع والتعابير البرمجية في لغة <span dir="ltr">F#</span> من فوق لتحت Top-down evaluation أي أن أي تعبير أو تعليمة برمجية داخل ملف البرنامج لا يمكن لها أن تشير لأي تعبير آخر ما لم يكن معرفا قبله. فمثلا لا يمكنك استدعاء دالّة function تم تعريفها بعد السطر الذي يتم فيه استدعاء هذه الدالّة، وذلك لأن مترجم <span dir="ltr">F#</span> يقوم بتقييم كل تعليمة سطرا بسطر، فإذا وجد إشارة لمعرّف أو دالّة لم يسبق له أن مرّ عليها فإنه سيعتبر ذلك خطأ في البرنامج.
+وعلى نفس المنوال فإن مترجم <span dir="ltr">F#</span> يقوم بفحص وتقييم الملفات حسب الترتيب الذي تحدّده، فإذا وجد تعليمة تشير إلى أي تعريف لم يمّر عليه في نفس الملف أو في ملفات سابقة فإنه يعتبر ذلك خطأ في التعليمة.</p>
+<p>لذلك يجب مراعاة مبدأ ترتيب الإعتمادية dependency order عند ترتيب الملفات وما تحويه في <span dir="ltr">F#</span>.</p>
+<p>&nbsp;</p>
+
+</div></center>
+<h3>إضافة متحكمات Controls إلى النموذج</h3>
+<p>نأتي الآن إلى نافذة MainForm ونبدأ في وضع عناصر واجهة الاستخدام، سوف نقوم بإنشاء بعض المتحكمات controls ونحدد خصائصها، وأنواع الأحداث التي نريد لها أن تستقبلها، والاجراءات التي تفوم بها وفق هذه الأحداث. </p>
+<p>سنقوم بإضافة التعليمات التالية:</p>
+<div class="div-code">
+<pre style="color:black;background:white;">
+  <span style="color:blue;">type</span>&nbsp;MainForm()&nbsp;<span style="color:blue;">as</span>&nbsp;x&nbsp;=
+    <span style="color:blue;">inherit</span>&nbsp;Form()</pre>
+</div>
+    <p>لاحظ كيف أضفنا المعرّف x لنتمكن لاحقا من استخدامه للإشارة الصنفية MainForm داخلها. في <span dir="ltr">F#</span> يمكننا أن نختار أي رمز ليكون إسما لمعرّف ذاتي للصنفية. يقابل هذا؛ المعرّف this في لغات مثل <span dir="ltr">C++</span> و <span dir="ltr">C#</span> و Java، والمعرّف Me في Visual Basic ، و self في Delphi .</p>
+
+<div class="div-code">
+<pre style="color:black;background:white;">
+    <span style="color:blue;">let</span>&nbsp;lbl&nbsp;=&nbsp;<span style="color:blue;">new</span>&nbsp;Label()
+    <span style="color:blue;">let</span>&nbsp;txt1&nbsp;=&nbsp;<span style="color:blue;">new</span>&nbsp;TextBox()
+    <span style="color:blue;">let</span>&nbsp;txt2&nbsp;=&nbsp;<span style="color:blue;">new</span>&nbsp;TextBox()
+    <span style="color:blue;">let</span>&nbsp;btReverse&nbsp;=&nbsp;<span style="color:blue;">new</span>&nbsp;Button()</pre>
+</div>
+
+<p>كما نلاحظ، فقد أنشأنا أربع متحكمات جديدة من أنواع مختلفة تضم متحكم Label (ملصق نصي)، إثنان متحكم TextBox صندوق نصي، ومتحكم زرّ Button. وربطنا كل واحد منهم بمعرّف identifier خاص به. فمثلا التعليمة:</p>
+<div class="div-code">
+<pre>
+    <span style="color:blue;">let</span>&nbsp;lbl&nbsp;=&nbsp;<span style="color:blue;">new</span>&nbsp;Label()
+</pre>
+</div>
+<p>أنشأنا بها متحكم من نوع Label وخصصناه أو ربطناه binding بالمعرّف/ الرمز lbl</p>
+
+
+<p>التعليمة new تعني إنشاء عنصر طبيعته iDisposale أي أنه كائن سيتم إفناؤه آليا عند انتهاء الحاجة إليه، عملية الإفناء تقوم بها نيابة عنا بيئة .Net بواسطة نظام جمع النفايات فيها garbege collection .</p>
+<p>لاحظ أيضا أن التعليمات السابقة تمت داخل الصنفية MainForm</p>
+<p>نقوم الآن بتحديد خصائص كل متحكم: </p>
+
+<div class="div-code">
+
+<pre style="color:black;background:white;">
+    <span style="color:blue;">do</span>
+      lbl.Location&nbsp;&nbsp;&lt;-&nbsp;<span style="color:blue;">new</span>&nbsp;Point(10,&nbsp;30)&nbsp;
+      lbl.Size&nbsp;&lt;-&nbsp;Size(640,&nbsp;30)
+      lbl.AutoSize&nbsp;&lt;-&nbsp;<span style="color:blue;">true</span>
+      lbl.Text&nbsp;&lt;-&nbsp;<span style="color:#a31515;">&quot;Hi&quot;</span>
+      lbl.Font&nbsp;&lt;-&nbsp;<span style="color:blue;">new</span>&nbsp;Font(<span style="color:#a31515;">&quot;Tahoma&quot;</span>,&nbsp;16.0f);
+       
+      txt1.Location&nbsp;&lt;-&nbsp;<span style="color:blue;">new</span>&nbsp;Point(10,&nbsp;70)&nbsp;
+      txt1.Size&nbsp;&lt;-&nbsp;Size(240,&nbsp;140)
+      txt1.Multiline&nbsp;&lt;-&nbsp;<span style="color:blue;">true</span>
+      txt1.AcceptsTab&nbsp;&lt;-&nbsp;<span style="color:blue;">true</span>
+      txt1.ScrollBars&nbsp;&lt;-&nbsp;ScrollBars.Vertical
+      
+      txt2.Location&nbsp;&lt;-&nbsp;<span style="color:blue;">new</span>&nbsp;Point(260,&nbsp;70)&nbsp;
+      txt2.Size&nbsp;&lt;-&nbsp;Size(240,&nbsp;140)
+      txt2.Multiline&nbsp;&lt;-&nbsp;<span style="color:blue;">true</span>
+      txt2.ScrollBars&nbsp;&lt;-&nbsp;ScrollBars.Vertical&nbsp;
+      
+      btReverse.Location&nbsp;&nbsp;&lt;-&nbsp;<span style="color:blue;">new</span>&nbsp;Point(10,&nbsp;220)
+      btReverse.TabIndex&nbsp;&lt;-&nbsp;2
+      btReverse.Text&nbsp;&lt;-&nbsp;<span style="color:#a31515;">&quot;Reverse&quot;</span>&nbsp;
+</pre>
+</div>
+
+
+<p>كما نحدد بعض الخصائص لنافذة النموذج نفسه، ثم نطلب من النموذح إضافة المتحكمات التي أنشأناها ضمن قائمة المتحكمات لديه.</p>
+
+<div class="div-code">
+
+<pre style="color:black;background:white;">
+      x.ClientSize&nbsp;&lt;-&nbsp;<span style="color:blue;">new</span>&nbsp;Size(520,&nbsp;262);
+      x.Text&nbsp;&lt;-&nbsp;<span style="color:#a31515;">&quot;Text&nbsp;Reverse&quot;</span>
+      x.Controls.Add(lbl)
+      x.Controls.Add(txt1)
+      x.Controls.Add(txt2)
+      x.Controls.Add(btReverse)
+ 
+</pre>
+</div>
+
+<p>لاحظ كيف يتم تغيير قيمة المتغيرات والخصائص باستخدام المعامل <span dir="ltr"><-</span> بدلا من المعامل =.</p>
+<center>
+<div class="div-note">
+<h3>= مقابل <span dir="ltr"><-</span></h3>
+<p>في <span dir="ltr">F#</span> المعامل = تعني تعريف أو تحديد definition ولا تعني التخصيص assignment للقيم، كما قد تعني المساواة equality فإذا قلنا <code>let a = 5</code> فإن هذا يعني أن ننشئ رمزا إسمه a ونحدد قيمته بأن تكون مساوية ل 5 وقيمته لاتتبدل لأن الرمز a هنا ليس متغيّر immutable. فإذا أتبعناه بتعبير a = 6 فإن <span dir="ltr">F#</span>  يتعامل معه على أنه تعبير منطقي boolean وناتجه في هذه الحالة false لأن a  لا تساوي 6. 
+بالمقابل فإن المعامل <span dir="ltr"><-</span> تعني تخصيص قيمة لمتغير متحوّل mutable مثل:</p>
+
+<pre style="color:black;text-align:left">
+    <span style="color:blue;">let mutable</span> = 5
+    a &lt;- 6</pre>
+
+<p>لأن المتغير a تم تعريفة على أنه mutable أي متحول يتم استخدام المعامل <span dir="ltr"><-</span>  لتغيير قيمته.
+ولأن خصائص المكونات مثل خاصية Text للمكون lbl هي متغيرات متحولة؛ نستخدم المعامل <span dir="ltr"><-</span>  لتغيير قيمها.  للإستزادة أنظر القيم والمتغيرات في <span dir="ltr">F#</span></p>
+
+</div></center>
+
+<p>الصورة التالية تبين شكل كود البرنامج الخاص بالنموذج.</p>
+<center><img alt="" src="16.png" /></center>
+<center>
+<div class="div-note">
+<h3>المسافات والهوامش</h3>
+في الإصدارات الأخيرة للغة <span dir="ltr">F#</span> اعتمدت التركيبات اللغوية المخففة lightweight syntax كنمط افتراضي لكتابة الكود، بحيث يتم التعبيرعن بدايات ونهايات كتل التركيبات البنيوية للكود بالمسافات والهوامش بدلا من وسوم مثل begin و end و done وغيرها. لذلك فإن هوامش الكود تؤثر في معناه.
+</div>
+</center>
+<p>إذا قمنا بتشغيل البرنامج سوف نحصل على نافذة مثل الشكل التالي:</p>
+<center><img alt="" src="17.png" /></center>
+
+<h3>تعيين الأحداث على المتحكمات</h3>
+
+<p>نقوم بتعيين الأحداث التي نريد للمتحكمات أن تستقبلها، ومع كل حدث نقوم بتعيين دالّة function تقوم باستقبال الحدث وتنفيذ أية متطلبات تخص هذا الحدث. </p>
+<p>نبدأ بالمتحكم txt1 وهو مربع كتابة TextBox ، الحدث الذي يهمنها معالجته هنا هو حدث KeyPress ، هذا الحدث يطرأ كلما ضغط المستخدم على مفتاح في لوحة المفاتيح. </p>
+<p>طريقة إضافة هذا الحدث والاشتراك فيه كالتالي:</p>
+
+<div class="div-code">
+<code>txt1.KeyPress.Add( دالّة )</code>
+</div>
+
+<p>كما نلاحظ في التعليمة أعلاه؛ يتم تحديد الدالّة بين القوسين. إما أن نكتب بين القوسين إسم الدالّة التي تستقبل الحدث وتتناوله، أو أن نكتب كامل الدالّة في عين المكان، وهذا ما سنفعلة بعد قليل بالنسبة لهذا الحدث.</p>
+<p>المتحكم txt1 له خاصية من نوع Event اسمها KeyPress وبها الدالّة Add والتي تتطلب معطى argument من نوع دالّة ، هذه الدالّة نحددها نحن لتكون بمثابة المستمع listener لتستقبل الحدث وبياناته، أو كما يشار إليها عادة بأنها دالّة callback .</p>
+<p>الدالّة التي سنحددها يجب أن تستقبل معطى من نوع EventArgs لذلك وجب استقبال هذه المعطى في   محدّد parameter يتم ربطه عادة بالرمز e .</p>
+
+<div class="div-code">
+<pre style="color:black;background:white;">
+      txt1.KeyPress.Add(<span style="color:blue;">fun</span>&nbsp;e&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;
+                                lbl.Text&nbsp;&lt;-&nbsp;e.KeyChar.ToString()&nbsp;&nbsp;
+                                + <span style="color:#a31515;">&quot;&nbsp;&quot;</span>&nbsp;+&nbsp;int(e.KeyChar).ToString()
+                                )</pre>
+</div>
+<p>
+الدالّة التي كتبناها هنا ليس لها إسم anonymous (تسمّى أيضا lambda) ويعبّر عن وجودها بالكلمة المفتاحية fun متبوعة بمعطى argument وهو e ثم المعامل <b><span dir="ltr"style="color:blue;">-></span></b> وبعده جسم الدالّة الذي يحتوي هنا على تعليمة واحدة قامت بتغيير قيمة الخاصية Text في المكوّن lbl بحيث تكون نصا يحتوي الحرف الذي تم ضغطه + رقم الحرف، فإذا ضغط المستخدم داخل المكون txt1 على المفتاح k ؛ يقوم مناول الحدث بتغيير كتابة المكون lbl لتصير k 107 كما في الصورة التالية:
+</p>
+<center><img alt="" src="18.png" /></center>
+
+<p>الحدث التالي الذي سنضيفه هو حدث Click الخاص بالمكون btReverse ، إضافة هذه الحدث ستكون كالتالي:</p>
+<div class="div-code">
+<pre>
+      btReverse.Click.Add(x.Reverse) 
+</pre>
+</div>
+<p>هنا طلبنا من المكون إضافة الحدث Click وكتبنا إسم الدالّة التي سيتم مناداتها عند وقوع الحدث.
+(لنكون أكثر دقة؛ حددنا دالّة تستقبل حدث Click وأعلمنا المكوّن بها كمشتركين لهذا الحدث، المكوّن من جهته عند وقوع الحدث إذا وجد دالّة مرتبطة بهذا الحدث يقوم بمناداتها مع ارسال البيانات اللازمة الخاصة بهذا الحدث.)</p>
+
+<p>لو لاحظت: فإننا هنا اكتفينا فقط بذكر إسم الدالّة، ولم نكتبها كاملة كما فعلنا مع الحدث السابق.
+(لاحظ أيضا أن الدالّة Reverse لم نكتبها بعد).</p>
+
+<center>
+<div class="div-note">
+<p>ما دمنا هنا، لم لا نعالج حدثا آخر من الأحداث التي تقع على txt1 وهو حدث TextChanged الذي يقع كلما طرأ تغيير على مربع النص فيه. ونستفيد منه بأن يتم تحويل النص عند تغيّره ثم إظهاره في مربع txt2 ، دون أن نضطر إلى استخدام الزرّ كلما أردنا تحويله. إضافة الحدث تكون كالتالي:</p>
+<pre style="text-align: left;">
+      txt1.TextChanged.Add(x.Reverse)
+	  
+</pre>
+
+</div></center>
+
+<h3>تعريف الدالّة Reverse</h3>
+<p>الدالّة التي سنقوم بإنشائها ستكون نهجية method تابع للصنفية MainForm  كالتالي:</p>
+
+<div class="div-code">
+<pre style="color:black;background:white;">
+    <span style="color:blue;">member</span>&nbsp;<span style="color:blue;">private</span>&nbsp;x.Reverse&nbsp;_&nbsp;=&nbsp;
+      txt2.Text&nbsp;&lt;-&nbsp;txt1.Text
+</pre>
+</div>
+<p>وهذه صورة لمقطع الكود يوضّح السياق الذي أتت فيه:</p>
+<center><img alt="" src="19.png" /></center>
+
+
+<p>الدالّة عضو في صنفية MainForm والتي سبق أن أعطيناها إسما إشاريا لها وهو x . لذلك كان تعريف الدالّة Reverse ملحقا بهذا الإسم أي: x.Reverse . </p>
+
+<p>التعليمة في جسم الدالّة (مؤقتا) مجرد تعليمة واحدة تقوم بنسخ محتويات txt1 إلى txt2، وسوف نقوم بعد قليل باستبدالها بالتعليمات اللازمة لقلب محتويات النص في txt1 ووضعه في txt2.</p.
+
+<p>لكن قبل ذلك أودّ أن نتفحّص تعريف هذه الدّالة بشيء من التفصيل حتى نتعرّف من خلالها على بعض جوانب الدوال في <span dir="ltr">F#</span> عموما.</p>
+
+<p>الدالّة يجب أن تستقبل معطى argument من نوع EventArgs ، وهنا لم نرمز للمعطى ونربطه بأي إسم كما فعلنا سابقا عندما أعطينا الرمز e لأنه ببساطة لن نحتاج له لكي نستخدمه، لذلك اكتفينا بوضع علامة _ (علامة wildcard character)، أي كأننا نقول: لا يهمنا المعطى الذي تستقبله الدالّة ولا نريد ربط قيمته بأي إسم.</p>
+
+<p>بعد تحديد اسم الدالّة و تحديد المعطى الذي تستقبله نضع علامة = التي بعدها يكون جسم الدالّة. وبهذا كأننا نقول بأن قيمة Reverse تساوي قيمة ناتج التعبيرات التي في جسم الدالّة.</p>
+
+</p>لو مررنا بمؤشّر الفأرة في المحرر فوق إسم الدالّة Reverse سيقوم الاستشعار الذكي للكود intellisense بإظهار تلميحة يظهر فيها توقيعة signature الدّالة  كما في الشكل التالي:</p>
+
+<center><img alt="" src="20.png" /></center>
+
+<div class="div-code">
+Reverse : EventArgs -> unit 
+</div>
+
+<p>هذه التوقيعة تقول بأن دالّة Reverse تستقبل قيمة من نوع EventArgs وتردّ قيمة من نوع unit . (سوف نشرح نوع unit  بعد قليل)</p>
+
+<p>السؤال هنا: كيف تعرّف المحرّر (ثم بعد ذلك مترجم <span dir="ltr">F#</span>) على نوع المحدد parameter  وحددّه بأنه من نوع EventArgs ، وبأن ناتج الدالّة من نوع unit ، بالرغم من أننا لم نحدد ذلك صراحة؟</p>
+<p>السرّ في ذلك هو نظام الاستدلال أو استدلال النوع type inference في <span dir="ltr">F#</span>. نظام الاستدلال يمكّن <span dir="ltr">F#</span> من استنتاج نوع البيانات للقيم والمتغيرات والمعطيات ونتائج الدوال وذلك من سياق التعابير في البرنامج.</p>
+
+<p>فمثلا في حالتنا هذه قام <span dir="ltr">F#</span> بالإستدلال على نوع بيانات المعطى _ بسبب ما تم سابقا عندما حددنا هذه الدالّة كمعطى للحدث Click :</p>
+<div class="div-code">
+btReverse.Click.Add(x.Reverse)  
+</div>
+
+<p>وحيث أن هذه الدالّة يجب أن تستقبل مُعطى argument من نوع EventArgs فإنه بالضرورة على المُعطى الذي تستقبله دالّة Reverse أن يكون من نفس النوع. وهكذا الأمر بالنسبة لناتج هذه الدالّة. </p>
+
+<p>لذلك في أحيان كثيرة لا نضطّر إلى التنويه annotation لنوع البيانات في برامجنا ونجعل <span dir="ltr">F#</span> 
+يتكفّل باستنتاج ذلك آليا، ما لم يكن هناك تناقضا أو التباسا؛ عندها يقوم <span dir="ltr">F#</span> 
+إما بالتنبيه أو الإشارة للخطأ. (يقوم المحرر بفحص تناسق وصحة أنواع البيانات بدون الاضطرار لبناء البرنامج)</p>
+
+<p>مع هذا، بإمكانا إذا شئنا أن نحدّد نوع البيانات صراحة كما في النسخة التالية من الدالّة:</p>
+<div class="div-code">
+<pre>
+    <span style="color:blue;">member</span> <span style="color:blue;">private</span> x.Reverse (_:&nbsp;<span style="color:#2b91af;">EventArgs</span>) : <span style="color:#2b91af;">unit</span>
+      txt2.Text &lt;- txt1.Text </pre>
+
+</div>
+
+<p> حيث حدّدنا بين قوسين المعطى ونوعه، ثم نوع ناتج الدالّة وذلك قبل جسم الدالّة. </p>
+<center>
+<div class="div-note">
+<h3>نوع unit</h3>
+في <span dir="ltr">F#</span>، كل دالّة لا بد لها أن تستقبل قيمة من نوع ما وأن تردّ قيمة من نوع ما.  ماذا لو أردنا للدالّة أن لا ترد أي قيمة نحتاجها؟ أو أن طبيعة عمل الدالّة لا تحتاج أن تردّ قيمة؛ كأن تقوم بطباعة شيء ما أو تقوم بتغيير قيمة في مكان ما. هنا تقوم <span dir="ltr">F#</span> بالاستعاضة عن ذلك بأن تردّ قيمة من نوع unit وتعني عدم وجود قيمة، ويعبّر عن قيمتها بـ: () .</p>
+<p>نوع unit شبيه بـ void في بعض اللغات. وفي حين أن النوع unit هو نوع بدون قيمة، أو بشكل أدق؛ نوع له قيمة وحيدة تشير لعدم وجود قيمة، نجد أن void في لغات أخرى قد تعني لاشيء أو بلا نوع. لذلك يمكنك في <span dir="ltr">F#</span> تعريف اسم أو رمز من نوع unit وتربطه بقيمته (أي بدون قيمة) كأن تقول: <span dir="ltr">let x = ()</span> بينما لا يمكنك ذلك في <span dir="ltr">C#</span>:</br><span dir="ltr">void x;</span></p>
+<h3>استخدام الدالّة ignore</h3>
+
+<p>أحيانا نستخدم دالّة ما أو تعبير ما كتعليمة statment تقوم بأمر محدد، ولا يهمنا قيمة ناتجها، ولا نحتاج لربطها بمعرّف (خاصة عند التعامل مع دوال مكتبات .Net) فإذا كانت هذه الدالّة أو التعبير لا تردّ قيمة من نوع unit ؛ فإن <span dir="ltr">F#</span> ينبّه بأن قيمة ناتج هذه الدالّة لم يتم ربطها بأي إسم. فمثلا عند كتابة التعليمة التالية:</p>
+<pre>
+  System.Console.ReadKey()
+</pre>
+<p>تقوم الدالّة <span dir="ltr">ReadKey()</span> بانتظار المستخدم للضغط على مفتاح، ,وفي الوقت نفسه؛ نحن لا يهمنا قيمة ناتجها، عندها نحتاج إلى تحويل قيمة ناتج هذه الدالّة إلى نوع unit كطريقة نخبر بها <span dir="ltr">F#</span> أن يتجاوز هذه القيمة ويهملها. دالّة ignore تقوم بهذا الأمر، ونستخدمها كاتالي:</p>
+<pre>
+  ignore( System.Console.ReadKey() )
+</pre>
+<p>أو بطريقة أكثر شيوعا وارتباطا بأسلوب <span dir="ltr">F#</span></p>
+<pre>
+  System.Console.ReadKey() |> ignore
+</pre>
+<p>القاعدة العامة، أن كلّ تعبير نوع ناتجه ليس unit يُفضل أن يربط بإسم أو يتم تحويل نوعه إلى unit. فمثلا: التعبير التالي نوعه int لأن قيمته وهي 4 من نوع int:</ br>
+
+<pre>
+  2 + 2</pre>
+<p>التعبير أعلاه يجب ربط قيمته بإسم مثل:</p>
+
+<pre>
+  <span style="color:blue;">let</span> a = 2 + 2</pre>
+<p>أو أن يتّم تحويل قيمته وبالتالي نوعه إلى unit مثل: </p>
+<pre>
+  2 + 2 |> ignore
+
+</pre>
+</div>
+</center>
+
+<h3>كتابة دالّة Reverse</h3>
+<p>يهدف برنامجنا إلى أخذ النص المكتوب في إحدى مربعات الكتابة وعرضه معكوسا في مربع آخر، وهذا ما سوف تفعله دالّة Reverse.</p>
+<p>سوف نقوم بهذا الأمر بعدة طرق، نحاول أن نتعرّف من خلالها على بعض جوانب <span dir="ltr">F#</span> . ثم نجري مقارنة سريعة بين هذه الطرق لمعرفة خصائص وعيوب كل واحدة منها.</p> 
+
+<h3>باستخدام دورانية for</h3>
+
+<p>هذه الطريقة التي نستخدمها عادة في برامجنا باللغات الإلزامية imperative languages مثل <span dir="ltr">C#</span> وجافا، حيث يتم إنشاء دالّة reverseChars مهمتها استقبال سلسلة حروفية string والمرور على حروفها بدأ من آخر حرف حتى أول حرف. </p>
+<p>لبناء سلسلة جديدة معكوسة باستخدام تركيبة for يمكن أن نصنع شيئا مثل التالي:</p>
+
+<div class="div-code">
+<pre style="background:white;">
+    <span style="color:blue;">member</span>&nbsp;<span style="color:blue;">private</span>&nbsp;x.Reverse _ = 
+      
+      <b><span style="color:blue;">let</span>&nbsp;reverseChars&nbsp;(s:&nbsp;string)&nbsp;=
+        <span style="color:blue;">let</span>&nbsp;<span style="color:blue;">mutable</span>&nbsp;newText&nbsp;=&nbsp;<span style="color:#a31515;">&quot;&quot;</span>
+        <span style="color:blue;">for</span>&nbsp;x&nbsp;=&nbsp;s.Length&nbsp;-&nbsp;1&nbsp;<span style="color:blue;">downto</span>&nbsp;0&nbsp;<span style="color:blue;">do</span>
+          newText&nbsp;&lt;-&nbsp;newText&nbsp;+&nbsp;s.[x..x]&nbsp;&nbsp;
+      newText</b>
+
+      <span style="color:blue;">let</span>&nbsp;s2&nbsp;=&nbsp;reverseChars&nbsp;txt1.Text
+      txt2.Text&nbsp;&lt;-&nbsp;s2
+</pre>
+</div>
+
+<p>كما تلاحظ؛ دالّة reverseChars هي دالّة داخلية nested function قمنا بوضعها داخل دالّة x.Reserve  حتى تكون قريبة منا لأغراض هذا الشرح، لكن يمكننا طبعا وضعها في مكان آخر قبل هذه النقطة أو حتى في ملف آخر. ثم أنشأنا المعرّف s2 وربطناه بقيمة ناتج الدالّة بعد أن أمررنا لها قيمة txt1.Text . أخيرا قمنا بإسناد قيمة s2 للخاصية txt2.Text.</p>
+<p>الدالّة تقريبا واضحة ولا تحتاج لشرح كبير، لكن لا يمنع من الإشارة لبعض الملاحظات:</p>
+<ul>
+<li>الدالّة تستقبل مُعطى واحد argument و هو s من نوع string وهنا قمنا بالتنويه بنوع المعطى صراحة، لأن <span dir="ltr">F#</span> قد يجد صعوبة هنا في استنتاج نوع المعطى. (دالّة Length لديها عدة استنساخات override ولن يعرف المترجم أيا منها سيجري استخدامه)</li>
+<li>
+<div>
+التعبير <span dir="ltr">s.[x..x]</span>  ، إذا افترضنا أن x تساوي 4 ؛ فهو يعني أن يستقطع من سلسلة s سلسلة أحرف تبدأ من الحرف الخامس إلى الحرف الخامس (أي حرفا واحدا). هنا تعاملنا مع s وكأنها مصفوفة أحرف. لكننا لماذا لم نعبّر عن هذا بمجرد إعطاء رقم موضع الحرف فقط مثل <span dir="ltr"> s.[x]</span> ونقول <span dir="ltr">newText + s.[x]</span>   ؟ السبب أن <span dir="ltr">s.[x]</span> سوف تعطينا قيمة من نوع char وهنا لا نستطيع أن نجمع بين المتغير newText ونوعه string مع قيمة من نوع char ما لم نقوم بتحويل هذه القيمة إلى نوع string مثل:
+<div class="div-code">
+<pre> newText <- newText + s.[x].ToString()</pre>
+</div>
+لذلك فإن التعليمة أعلاه تعادل نتيجتها التعليمة التي استخدمناها:
+<div class="div-code">
+<pre> newText <- newText + s.[x..x]</pre>  
+</div>
+
+</li>
+<li>ناتج أية الدالّة في <span dir="ltr">F#</span> هي قيمة آخر تعبير expression في الدّالة، لذلك فإن ناتج دالّة reverseChars هي قيمة المتغيّر newText</li>
+<li>في الوضع الافتراضي للتركيبات اللغوية syntax في <span dir="ltr">F#</span> تكون لهوامش الأسطر دلالة داخل الكود، وهي التي تحدد بدايات ونهايات الكتل فيه، فلو نأتي للسطر الأخير مثلا من الدالّة (الذي به newText) وقدمناه أو أخّرناه مسافة؛ فإن المحررّ فورا سيشير إلى خطأ في هذا التعبير.</li>
+</ul>
+
+<h3>اختبار الدالّة</h3>
+<p>يمكننا اختبار الدالّة بدون تنفيذ البرنامج، وذلك عبر أداة <span dir="ltr">F# Interactive</span> . قم بتضليل كامل الدّالة ثم اضغط Alt + Enter فيقوم المحرّر عندها بإرسال الكود المضلل إلى <span dir="ltr">F# Interactive</span> التي يباشر بتقييمه evaluate وطباعة ناتج التقييم.</p>
+<center><img alt="" src="21.png" /></center>
+
+<p>فور قيام <span dir="ltr">F# Interactive</span> بتقييم الدالّة، يظهر توقيعة signature الدالّة إذا كان تعابير الدالّة صحيحة بدون أخطاء. التوقيعة تبيّن إسم الدالّة والمدخلات التي تستقبلها ونوعها، وكذلك نوع ناتج الدالّة كالتالي:</p>
+<div class="div-code">
+<pre>  val reverseChars : s:string -> string</pre>
+</div>
+<p> بذلك تكون الدالّة جاهزة لإختبارها، وذلك بكتابة إسم الدالّة وقيمة المعطى لها، وإنهاء التعبير بفاصلتين منقوطتين ثم مفتاح الادخال.</p>
+<div class="div-code">
+<pre>
+  <b>> reverseChars "abcdef";;</b>
+  val it : string = "fedcba"
+</pre>
+</div>
+<p>المخرجات التي يظهرها <span dir="ltr">F# Interactive</span> هي قيمة ناتج الدالّة وبيان نوع القيمة وهي string في هذه الحالة.</p>
+
+<p>يمكنك أيضا مناداة الدالّة بضخّ المعطى النصي لها بواسطة المعامل <b><span dir="ltr">|></span></b> كالتالي:</p>
+<div class="div-code">
+<pre>
+  <b>> "abcdef" |> reverseChars;;</b>
+  val it : string = "fedcba"
+</pre>
+</div>
+<p>
+لاحظ وجود كلمة it وهي مجرد متغير داخلي يتم ربطه بقيمة آخر تعبير تم انتاجه في <span dir="ltr">F# Interactive</span> ، فلو كتبنا المعرّف it وطلبنا قيمته فإن الناتج سيكون قيمة آخر تعبير تم تقييمه مثل التالي:</p>
+<div class="div-code">
+<pre>
+  > it;;
+  val it : string = "fedcba"
+</pre>
+</div>
+<h3>باستخدام دالّة ارتدادية</h3>
+<p>في البرمجة الدّالية functional programming، الأسلوب الافتراضي لإنجاز العمليات المتكررة هو استخدام دالّة ارتدادية recursive function أي الدّالة التي تنادي على نفسها كل مرة، ولاتتوقف الدالّة على هذه المناداة إلا إذا تحقّق شرطا محددا (يعرف هذا الشرط بـ base case).</p>
+<p>في <span dir="ltr">F#</span> يتم وضع الكلمة المفتاحية rec قبل إسم الدالّة الارتدادية، كما في النسخة التالية من الدالّة:</p>
+
+<div class="div-code">
+<pre style="background:white;">
+    <span style="color:blue;">member</span>&nbsp;<span style="color:blue;">private</span>&nbsp;x.Reverse&nbsp;_
+<b>
+      <span style="color:blue;">let</span>&nbsp;<span style="color:blue;">rec</span>&nbsp;reverseChars&nbsp;s&nbsp;newText&nbsp;=
+        <span style="color:blue;">match</span>&nbsp;s&nbsp;<span style="color:blue;">with</span>
+        |<span style="color:#a31515;">&quot;&quot;</span>&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;newText
+        |_&nbsp;&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;reverseChars&nbsp;s.[1..]&nbsp;(s.[0..0]&nbsp;+&nbsp;newText)
+</b>
+      <span style="color:blue;">let</span>&nbsp;s2&nbsp;=&nbsp;reverseChars&nbsp;txt1.Text&nbsp;<span style="color:#a31515;">&quot;&quot;</span>
+      txt2.Text&nbsp;&lt;-&nbsp;s2
+</pre>
+</div>
+
+<p>الدالّة تستقبل معطيين: s، ويحمل النص المطلوب قلبه، و newText ويحمل نصا مقلوبا من آخر عملية استدعاء للدالّة. (يتم الفصل بين محددات الدالّة parametes بفراغ وكذلك الفصل بن المعطيات arguments)</p>
+<p>في هذه الدّالة استخدمنا إحدى أشهر أدوات البرمجة الدالّية لفرز البيانات ,والتحكّم في تدفّقها؛ وهي مطابقة الأنماط pattern matching . فبدلا من استخدام تركيبة if then else لفحص قيمة s استخدمنا تركيبة match with لمراقبة نمطين لقيمة s ، النمط الأول أن تكون قيمة s تساوي ""، والنمط الثاني أن تكون قيمة s أية حروف أخرى، وقد عبّرنا عن النمط التالي بعلامة _ .</p>
+<p>لا ننسى أن ناتج أية دالّة هو آخر تعبير يتحقّق فيها.</p>
+
+<center>
+<div class="div-note">
+<p>تتجلّى فائدة pattern matching أكثر عند تعدد الخيارات والشروط وكذلك تنوع وتعدد القيم بتركيباتها المختلفة التي يتعيّن تفكيكها وفحصها، بطريقة تتفوق بها على أدوات if أو switch case، لذلك وبسبب بساطة الشرط الذي احتجناه في الدالّة، ربما يكون الكود أكثر مقروئية وبساطة لو كان بالشكل التالي:</p>
+
+<pre>
+  <span style="color:blue;">if</span>&nbsp;s&nbsp;=&nbsp;<span style="color:#a31515;">&quot;&quot;</span><span style="color:blue;"> then</span>&nbsp;newText
+  <span style="color:blue;">else</span>&nbsp;&nbsp;
+    reverseChars&nbsp;s.[1..]&nbsp;(s.[0..0]&nbsp;+&nbsp;newText)
+
+</pre>
+
+</div></center>
+
+<p>عند مناداة الدالّة لأول مرة: ( 
+<span style="color:blue;font-family: 'Consolas';font-size: 17px;" dir="ltr">let <span style="color:black;">s2 = reverseChars txt1.Text ""</span></span>)
+ تكون قيمة المعطى الأول هو نص txt1.Text ، وتكون قيمة المعطى الثاني نصا فارغا.</p>
+
+<p>(1) تقوم الدالّة أولا بفحص قيمة المعطى الأول s فإذا كان فارغا (2) تردّ قيمة المعطى الثاني newText وينتهي عمل الدالّة.</p>
+
+<p>أما إذا كانت قيمة المعطى s تحمل أحرفا؛(3) تقوم الدالّة بمناداة نفسها بحيث تكون قيمة المعطى الأول هي قيمة النص في S ناقصا الحرف الأول <span dir="ltr">s.[1..]</span>  ،  وقيمة المعطى الثاني هي قيمة الحرف الأول من النص <span dir="ltr">s.[0..0]</span>  مضافا بعده قيمة newText.</p>
+
+<p> تقوم الدالّة عند استدعائها مرة أخرى بنفس الخطوات، حتى يتم استخلاص كل الأحرف وتصير قيمة s فارغة، عندها تردّ قيمة المعطى الثاني الذي استقبلته وينتهي دوران الدالّة حول نفسها.</p>
+<p>لمتابعة عمل الدالّة خطوة خطوة؛ نفترض أن المطلوب من الدالّة قلب الأحرف ABC ، لذلك فإن أول مناداة لها تكون كالتالي:
+</p>
+<div class="div-code">
+<pre>  s2 = reverseChars "ABC" ""</pre>
+</div>
+<p>حبث تستقبل الدالّة المعطى s وقيمته "ABC" والمعطى newText وقيمته ""، فتقوم بمناداة نفسها مرة أخرى مع تمرير قيم جديد في معطيات النداء. قيمة المعطى الأول ستكون قيمةS  بعد حذف الحرف الأول فيكون "BC" وقيمة المعطى الثاني هو أول حرف من S وهو A وتضيف قبله قيمة newText وهي "" فتصبح A كالتالي:</p>
+<div class="div-code">
+<pre>  reverseChars "BC" "A"</pre>
+</div>
+<p>تقوم الدالّة في استدعائها التالي بتطبيق نفس الخطوات على القيم التي استقبلتها وتنتج قيما جديدة تنادي بها نفسها:</p>
+<div class="div-code">
+<pre>
+  reverseChars "C" "BA" 
+  reverseChars "" "CBA" 
+</pre>  
+</div>
+<p>وهكذا حتى تصير قيمة s فارغة ، عندها تتوقف عند مناداة نفسها، وتردّ قيمة المعطى الثاني CBA لنقطة الاستدعاء قبلها وهكذا لتكون هذه القيمة هي الناتج النهائي للدالّة.</p>
+
+<center>
+<div class="div-note">
+<p>قد يجد غير المتعوّد على الدوال الارتدادية صعوبة في تصوّرها وتتبع عملها وتوقّع مخرجاتها، وهذا أمر طبيعي، إلإ أنه مع الممارسة وترويض الذهن وتمرينه على التفكير بهذا الأسلوب؛ سيجد أن استخدام الدوال الارتدادية أكثر أريحية وربّما سيفضّلها عن استخدام أدوات التكرار مثل for  و while. </p>
+</div></center>
+
+<h3>باستخدام دوال <span dir="ltr">F#</span></h3>
+<p>
+الطريقة الثالثة التي سنستخدمها لمعالجة النص وإظهاره معكوسا؛ هي باستخدام الدوال الجاهزة في <span dir="ltr">F#</span> ومكتبات <span dir="ltr">.Net</span> سوف لن ننشئ دالّة لهذا الغرض كما فعلنا في الطريقتين السابقتين، بل فقط ربط مجموعة من الدوال الجاهزة التي من شأنها تحقيق المطلوب، كالتعبير التالي:</p>
+
+<div class="div-code">
+<pre style="background:white;">
+    <span style="color:blue;">member</span>&nbsp;<span style="color:blue;">private</span>&nbsp;x.Reverse&nbsp;_&nbsp;=&nbsp;
+ <b>
+      <span style="color:blue;">let</span>&nbsp;s2&nbsp;=&nbsp;txt1.Text.ToCharArray()&nbsp;|&gt;&nbsp;<span style="color:#2b91af;">Array</span>.rev&nbsp;|&gt;&nbsp;<span style="color:#2b91af;">String</span>
+</b>
+      txt2.Text&nbsp;&lt;-&nbsp;s2
+</pre>
+</div>
+
+<p>التعبير السابق عبارة عن توالي سلسلة من الدوال، كل دالّة تستقبل قيمة من ما قبلها وتحيل ناتجها إلى الدالّة التي تليها باستخدام المعامل pipeline <span dir="ltr">|></span> . وترجمتها كالتالي:</p>
+<ul>
+<li>تحويل النص في txt1.Text إلى مصفوفة من الأحرف : <span style="font-family: 'Consolas';font-size: 17px;"dir="ltr"> txt1.Text.ToCharArray()</span></li>
+<li>عن طريق المعامل <span dir="ltr">|></span> يتم ضخ المصفوفة إلى الدالّة Array.rev التي تقوم بعكس ترتيب عناصرها من الأحرف ووضعها في مصفوفة جديدة.</li>
+<li>ضخ المصفوفة الجديدة إلى الدالّة String التي تقوم بتحويل أحرف المصفوفة إلى سلسلة نصية.</li>
+<li>ربط قيمة السلسة النصّية الناتجة بالمعرّف s2</li>
+<li>تخصيص قيمة s2 للخاصية txt2.Text باستخدام المعامل <span dir="ltr"><-</span></li>
+
+</ul>
+
+<p>
+في هذه الطريقة استخدمنا ما هو متوفر من دوال جاهزة في مكتبات <span dir="ltr">F#</span> و <span dir="ltr">.Net</span> بحيث أخذنا النص الأصلي وحولناه إلى مصفوفة أحرف باستخدام ToCharArray وذلك لنستغل دالّة أخرى مهمتها قلب ترتيب عناصر مصفوفة وهي دالّة Array.rev التي قامت بذلك ووضعتها في مصفوفة جديدة، ثم تسليمها للدالّة String لتقوم بتحويل أحرف المصفوفة إلى نصّ. هذا النص يتم وضعه في المربع txt2.
+</p>
+<p>المعامل <span dir="ltr">|></span> يُسمى forward pipeline حيث يقوم بأخذ قيمة ما قبله ويحيلها كمدخل لدالّة بعده، بحيث إذا استعمل المعامل بين مجموعة دوال؛  تبدو وكأنها خط أنابيب، كل دالّة تضخ ناتجها للدالّة التي تليها: 
+</p>
+<div class="div-code">
+<pre>  
+      <span style="color:blue;">let</span> s2 = txt1.Text.ToCharArray() |&gt; <span style="color:#2b91af;">Array</span>.rev&nbsp;|&gt;&nbsp;<span style="color:#2b91af;">String</span>
+</div>
+<p>وهذا يعادل التعبير التالية :</p>
+<div class="div-code"><pre>
+      txt2.Text &lt;- <span style="color:#2b91af;">String</span>(<span style="color:#2b91af;">Array</span>.rev(txt1.Text.ToCharArray()))
+</pre>
+</div>
+<p>&nbsp;</p>
+<h3>مقارنة بين نسخ الدالّة</h3>
+<p>فيما يلي النسخ الثلاث من الدالّة:</p>
+
+<div class="div-code">
+
+<pre style="background:white;">
+<span style="color:blue;">let</span>&nbsp;reverseChars&nbsp;(s:&nbsp;string)&nbsp;=
+  <span style="color:blue;">let</span>&nbsp;<span style="color:blue;">mutable</span>&nbsp;newText&nbsp;=&nbsp;<span style="color:#a31515;">&quot;&quot;</span>
+  <span style="color:blue;">for</span>&nbsp;x&nbsp;=&nbsp;s.Length&nbsp;-&nbsp;1&nbsp;<span style="color:blue;">downto</span>&nbsp;0&nbsp;<span style="color:blue;">do</span>
+    newText&nbsp;&lt;-&nbsp;newText&nbsp;+&nbsp;s.[x..x]
+  newText
+ 
+ 
+<span style="color:blue;">let</span>&nbsp;<span style="color:blue;">rec</span>&nbsp;reverseChars&nbsp;s&nbsp;newText&nbsp;=
+  <span style="color:blue;">match</span>&nbsp;s&nbsp;<span style="color:blue;">with</span>
+  |<span style="color:#a31515;">&quot;&quot;</span>&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;newText
+  |_&nbsp;&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;reverseChars&nbsp;s.[1..]&nbsp;(s.[0..0]&nbsp;+&nbsp;newText)
+ 
+ 
+txt1.Text.ToCharArray() |&gt; <span style="color:#2b91af;">Array</span>.rev&nbsp;|&gt;&nbsp;<span style="color:#2b91af;">String</span>
+</div>
+
+<p><b>الطريقة الأولى</b> هي الأكثر سرعة وكفاءة، لأنها الأكثر مقاربة لطريقة عمل الحاسوب، لكن احتواء هذه الطريقة على متغير متحوّل mutable لايثبت على قيمة محددة؛ قد يزعج مبرمجي اللغات الدالّية، لأنه إذا تضخّم حجم الكود داخل الدورانية وتكاثرت فيها المتغيّرات المتحولّة ، فإن هذه المتغيّرات قد تكون مصدرا محتملا للثغرات وما تسبّبه من متاعب لتعقّبها.</p>
+
+<p><b>الطريقة الثانية؛</b> باعتماد دالّة ارتداية، تبدو أنيقة وموجزة ، وتتماشى مع الأسلوب العام للبرمجة الدالّية، وهي بالنسبة للمتمرسين في البرمجة الدالّية أكثر مقروئية من سابقتها، وأكثر صلابة (يمكن توقع خصائص الكود ونتيجته بدون تجربته reason about). أيضا فإن كفاءة وسرعة الكود في هذه النسخة من الدالّة ستكون مقاربة لسرعة الطريقة الأولى.</p>
+<p><b>الطريقة الثالثة؛</b> تبدو أكثر إيجازا وأناقة وأكثر تعبيرية والفضل في ذلك إلى دالّة Array.rev التي قامت بالعمل الأساسي، لكن يعيبها تعدد البناءات والعمليات التي تمت فيها، فهي أولا قامت ببناء مصفوفة جديدة ووضعت فيها الأحرف الأصلية، ثم قامت ببناء مصفوفة أخرى بالمواضع الجديدة للأحرف، ثم تحويل هذه المصفوفة ثانية إلى نص. لاشك في أن هذه الطريقة هي الأكثر كلفة من حيث الموارد والوقت.</p>
+
+<p><b>أي الطرق أفضل؟</b> الإجابة المعتادة: الأمر يعتمد على ...!</p>
+<p>في البرمجة عادة ما يتم تفضيل الكود الموجز الذي يسهل استيعابه وتتبعه وتوقّع نتائجه، وأن يكون خال ما أمكن من المؤثرات والتأثيرات الجانبية side effects (أي أن الدالّة لا تتأثر إلا بالمعطيات التي تستقبلها، ولا تؤثّر في شيء خارجها)، وهذا يمكن ضمانه باتباع الأعراف والأساليب التي تحكم البرمجة الدالّية مثل؛ تفضيل القيم غير المتحولة على المتغيرات المتحولة، الدول الارتدادية على البناءات التكرارية iterative ، مطابقة الأنماط.</p>
+
+<p>من جهة أخرى فإن المهام التي تكون فيها سرعة الأداء وكفاءته أمرا حيويا، فإن الأمر يتطلب استخدام الأساليب البرمجية التي تضمن الوصول إلى هذه الأهداف، وهنا تأتي أفضلية استخدام المتغيرات المتحولة mutable variables وتكرارات for و while فهي بلا شك الأكثر سرعة وكفاءة لأنها الأقرب للغة العتاد machine code وطريقة عمله.</p>
+<p>ولكن المحك الرئيسي لاختيار طريقة أو أسلوب ما في البرمجة عموما هو: <b>القياس</b>. أن تقيس نتائج كل طريقة على البيانات الحقيقية التي يتعامل معها برنامجك وعلى مقدار الجهد الذي يواجهه، وعلى ما هو متوقع منه. لذلك قد ترى نفسك تنتقل من طريقة إلى أخرى كلما تغيرت طبيعة البيانات، أو تغيّر حجمها أو تغيّر معدل طلبات النفاذ إليها عبر الزمن.</p>
+
+<h3>ضبط الدّالة الارتدادية</h3>
+<p>يجب الانتباه إلى أنه مالم يتم ضبط optimize الدالّة الارتدادية بحيث تراعي مبدأ tail call ؛ فإن تضخم عدد النداءات التي تقوم بها تجعل الدّالة مرشّحة للتوقّف والتسبب في عطل برنامجك. (عدد النداءات في برنامجنا سيكون مساويا لعدد الأحرف في النصّ).</p>
+
+<center>
+<div class="div-note">
+<p><b>ماذا يحدث لو أزلنا الأقواس في التعبير التالي، ثم نجرّب البرنامج على نصّ كبير الحجم؟</b></p>
+<pre>
+    reverseChars s.[1..] <span style="color:red"><b>(</b></span>s.[0..0] + newText<span style="color:red"><b>)</b></span>
+</pre>
+
+</div></center>
+
+<p>لنتعرّف على تأثير هذا المبدأ على عمل الدالّة حاول أن تقوم بتعديل الكود وذلك بحذف القوسين المحيطين بالمعطى الثاني، ليكون آخر استدعاء في الدالّة بالشكل التالي:</p>
+
+<div class="div-code">
+  reverseChars <b>s.[1..] s.[0..0]</b> + newText 
+</div>
+
+<p>هنا تم تعديل المعطى الثاني ليكون فقط <span dir = "ltr">s.[0..0]</span> . معنى هذا؛ أن ناتج هذا التعبير لن يتحقق حتى يتم جمع ناتج استدعاء الدالّة مع قيمة newText.</p>
+
+<p>لذلك بعد أن تتم سلسلة الاستدعاءات المتوالية، وفي آخر استدعاء، سيعود المترجم للخلف لنقطة الاستدعاء السابقة لالتقاط وحساب القيمة المتعقبة (في حالتنا newText) ، ثم يحمل نتيجته ويعود لنقطة الاستدعاء التي قبلها ليقوم بنفس الأمر حتى أول استدعاء، هذه العودة المتوالية للإستدعاءات السابقة؛ تجبر المترجم على تخصيص مرجع ومساحة لكل استدعاء حتى يعود إليه ، فإذا تضخمت عدد المساحات وتراكمت تختنق الذاكرة ويتوقف البرنامج مع عطل stack over flow.</p>
+<p>لذلك في نسخة الدالّة التي اعتمدناها راعينا مبدأ tail call عند استدعائها من داخلها مرة أخرى، وجعلناها تحيل ناتج تراكم النص المقلوب (newText) إلى الإستدعاء الذي يليه دون الاضطرار للعودة لمراكمة القيمة، وبذلك فإن الدالّة ستقوم بعملها مهما كان النص ضخما.</p>
+
+<center>
+<div class="div-note">
+<p>جرى العرف في الدوال الارتدادية أن يتم تسمية المعطى الذي تتراكم فيه القيم ب acc اختصارا لكلمة accumulator أو accumulation  بمعني مراكم أو تراكم. وقد أسمياه هنا newText للتوضيح.<p>
+</div>
+</center>
+<h3>تحسين الدالّة</h3>
+<p>بالرغم من قيام الدوال السابق عرضها بقلب حروف النص الأصلي؛ إلا أن فيها عيب بسيط، وهو أنه مهما كان عدد الأسطر التي يحتويها النص الأصلي؛ فإن الناتج يظهر دائما كسطر واحد. كما في الصورة التالية:</p>
+<center><img alt="" src="22.png" /></center>
+
+<p>السبب في ذلك أن علامتي إنهاء السطر (carriage return) وبدء سطر جديد  (new line) يتم عكس ترتيبهما أيضا بعد التحويل مما يربك مفعولهما داخل مربّع النص. العلامتين يشار لهما ب <span dir="ltr">‘\r’</span> و <span dir="ltr">‘\n’</span> أو برقميهما <span dir="ltr">‘\013’</span> و <span dir="ltr">‘\010’</span>  على التوالي. العلاماتان غير منظورتين ، ولكن يمكن أن نعبّر عنهما داخل الكود كالتالي:</p>
+
+<div class="div-code">
+   "ABCD<span style="color:red"><b>\r\n</b></span>EFG"
+</div>
+<p>وعند قلب الأحرف تصير بالشكل التالي:</p>
+
+<div class="div-code">
+   "ABCD<span style="color:red"><b>\n\r</b></span>EFG"
+</div>
+
+<p>لذا الأمر يتطلب معالجة ذلك بحيث نحافظ على العلامتين بموضعهما الأصلي.</p>
+<p>كحلّ سريع يمكن يمكن إضافة دالّة جاهزة تقوم باستبدال الأحرف بأخرى واستغلالها بحيث يعود الحرفان إلى ترتيبهما الأول:</p>
+
+<div class="div-code">
+<pre style="background:white;">
+      <span style="color:blue;">let</span>&nbsp;s2&nbsp;=&nbsp;reverseChars&nbsp;txt1.Text&nbsp;<span style="color:#a31515;">&quot;&quot;</span>
+      <span style="color:blue;">let</span>&nbsp;s2&nbsp;=&nbsp;s2.Replace(<span style="color:#a31515;">&quot;\n\r&quot;</span>,&nbsp;<span style="color:#a31515;">&quot;\r\n&quot;</span>)
+</pre>
+
+</div>
+
+<h3>استبدال الأحرف باستخدام الدالّة map</h3>
+<p>لو أخذنا آخر نسخة  من دالّة Reverse يمكننا حشر دالّة في المنتصف تقوم باستبدال موضع العلامتين، وذلك باستخدام دالّة map . للتذكير؛ التعبير السابق كان كالتالي:</p>
+
+<div class="div-code">
+<pre>
+      <span style="color:blue;">let</span> s2 = txt1.Text.ToCharArray()&nbsp;|&gt;&nbsp;Array.rev&nbsp;|&gt;&nbsp;String
+</pre>
+</div>
+<p>بعد حشر دالّة map ستكون كما يلي:</p>
+<div class="div-code">
+<pre style="background:white;">
+
+      <span style="color:blue;">let</span>&nbsp;s2&nbsp;=
+        txt1.Text.ToCharArray()&nbsp;
+        |&gt;&nbsp;Array.rev&nbsp;
+        |&gt;&nbsp;<b>Array.map</b>&nbsp;(<span style="color:blue;">fun</span>&nbsp;x&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;<span style="color:blue;">if</span>&nbsp;x&nbsp;=&nbsp;<span style="color:#a31515;">&#39;\r&#39;</span>&nbsp;<span style="color:blue;">then</span>&nbsp;<span style="color:#a31515;">&#39;\n&#39;</span>&nbsp;
+                               <span style="color:blue;">elif</span>&nbsp;x&nbsp;=&nbsp;<span style="color:#a31515;">&#39;\n&#39;</span>&nbsp;<span style="color:blue;">then</span>&nbsp;<span style="color:#a31515;">&#39;\r&#39;</span>&nbsp;
+                               <span style="color:blue;">else</span>&nbsp;x)&nbsp;
+        |&gt;&nbsp;String
+</pre>
+</div>
+
+<p>دالّة map هي إحدى أشهر الدوال في لغات البرمجة الدالّية، حيث يتم إعطاؤها دالّة تقوم بتطبيقها على كل عنصر من عناصر متوالية (مصفوفة، قائمة،..)  لتنتج متوالية أخرى بالقيم الجديدة للعناصر.</p>
+<p>في مثالنا السابق تم ضخّ المصفوفة التي انتجتها Arrary.rev إلى دالّة Array.map ، وأعطيناها دالّة بدون إسم لتقوم بتطبيقها على كل عنصر من عناصر المصفوفة. ستقوم دالّة map بأخذ العنصر الأول من المصفوفة وتعطيه لدالتنا التي ستستقبله في الرمز x ، تقوم دالتنا بفحص x فإذا كانت قيمتها تساوي<span dir="ltr">‘\r’</span>  يكون ناتج الدالّة <span dir="ltr">‘\n’</span> وإذا كانت تساوي <span dir="ltr">‘\n’</span> يكون ناتجها <span dir="ltr">‘\r’</span> ، غير ذلك يكون ناتجها نفس قيمة X. تأخذ الدالّة map الناتج وتضعه في مصفوفة جديدة، وتكرّر نفس الخطوات مع العنصر التالي في المصفوفة الأولى حتى آخر عنصر، المصفوفة الجديدة تكون ناتج دالّة map .</p>
+
+
+<h3>إضافة لائحة أوامر للنافذة MainForm </h3>
+<p>تبقّى لنا الآن إضافة لائحة أوامر لنافذة برنامجنا. لائحة الأوامر ستكون كالشكل التالي:</p>
+
+<center><img alt="" src="23.png" /></center>
+
+<p>سيتم بناء كود كامل عناصر لائحة الأوامر وما يتبعها في دالّة واحدة، ويكون ناتج الدالّة مكوّن من نوع MenuStrip الذي سيتم ضمّه إلى بقية مكوّنات النافذة. يمكن أن نضع هذه الدالّة بعد تعريف btReverse الذي سبق وعرّفناه. كود الدالّة كالتالي:</p>
+
+<div class="div-code">
+
+<pre style="background:white;">
+    <span style="color:silver;">
+    let txt2 = new TextBox()
+    let btReverse = new Button()</span>
+ 
+    <span style="color:blue;">let</span> menuStrip =
+      <span style="color:blue;">let</span> menu = <span style="color:blue;">new</span> <span style="color:#2b91af;">MenuStrip</span>()
+    
+      <span style="color:blue;">let</span> mnuFile = <span style="color:blue;">new</span> <span style="color:#2b91af;">ToolStripMenuItem</span>(<span style="color:#a31515;">&quot;&amp;File&quot;</span>)
+      <span style="color:blue;">let</span> mnuNew = <span style="color:blue;">new</span> <span style="color:#2b91af;">ToolStripMenuItem</span>(<span style="color:#a31515;">&quot;&amp;New&quot;</span>)
+      <span style="color:blue;">let</span> mnuExit = <span style="color:blue;">new</span> <span style="color:#2b91af;">ToolStripMenuItem</span>(<span style="color:#a31515;">&quot;E&amp;xit&quot;</span>)
+ 
+      mnuFile.DropDownItems.Add(mnuNew) |&gt; ignore   
+      mnuFile.DropDownItems.Add(mnuExit) |&gt; ignore
+      mnuNew.Click.Add(<span style="color:blue;">fun</span> _ <span style="color:blue;">-&gt;</span> txt1.Clear()) 
+      mnuExit.Click.Add(<span style="color:blue;">fun</span> _ <span style="color:blue;">-&gt;</span> x.Close())
+ 
+      <span style="color:blue;">let</span> mnuEdit = <span style="color:blue;">new</span> <span style="color:#2b91af;">ToolStripMenuItem</span>(<span style="color:#a31515;">&quot;&amp;Edit&quot;</span>)
+      <span style="color:blue;">let</span> mnuCopy = <span style="color:blue;">new</span> <span style="color:#2b91af;">ToolStripMenuItem</span>(<span style="color:#a31515;">&quot;&amp;Copy&quot;</span>)
+      <span style="color:blue;">let</span> mnuPaste = <span style="color:blue;">new</span> <span style="color:#2b91af;">ToolStripMenuItem</span>(<span style="color:#a31515;">&quot;&amp;Past&quot;</span>)
+  
+      mnuEdit.DropDownItems.Add(mnuCopy) |&gt; ignore
+      mnuEdit.DropDownItems.Add(mnuPaste) |&gt; ignore
+      mnuCopy.Click.Add(<span style="color:blue;">fun</span> _ <span style="color:blue;">-&gt;</span> txt1.Copy() )
+      mnuPaste.Click.Add(<span style="color:blue;">fun</span> _ <span style="color:blue;">-&gt;</span> txt1.Paste() )
+ 
+      menu.Items.Add(mnuFile) |&gt; ignore
+      menu.Items.Add(mnuEdit) |&gt; ignore
+ 
+      menu
+</pre>
+</div>
+
+<p>في هذه الدالّة قمنا بإنشاء مكوّن من نوع MenuStrip وأسميناه menu والذي سيشكل مجموع نظام لائحة الأوامر وعناصرها، ثم أنشأنا مجموعة من العناصر من نوع ToolStripMenuItem تتبع بعضها البعض، هذه العناصر الفرعية تندرج تحت عنصرين أساسيين mnuFile و mnuEdit وتحتهما تتفرع بقية العناصر، بينما سوف يتبع العنصران الأساسيان لنظام لائحة الأوامر الأساسية menu. أيضا حددنا لبعض العناصر تعليمات يتم تنفيذها بناء على حدث Click فيها.</p>
+<p>هذه الدالّة سوف تردّ ناتجا عبارة عن متحكّم من نوع MenuStrip والذي يتمثل في العنصر أو الكائن menu والذي تم التعبير عنه أو الإشارة إليه في آخر الدالّة. (تذكر أن آخر تعبير في الدالّة يمثل قيمتها أو ناتجها).</p>
+
+<p>رأينا سابقا كيف أضفنا العناصر التي أنشأناها إلى النافذة/ النموذج، مثل عنصر btReverse الذي أضفناه باستخدام التعليمة <span style="font-family: 'Consolas';" dir="ltr">x.Controls.Add(btReverse)</span> ، نفس الأمر سوف نقوم به بالنسبة لشريط الأوامر كالتالي:</p>
+<div class="div-code">
+<pre>
+      <span style="color:silver;">
+      x.Controls.Add(btReverse)</span>  
+      x.Controls.Add(stripMenu)
+</pre>
+</div>
+<p>هنا أضفنا ناتج الدالّة stripMenu والذي هو متحكم شريط الأوامر في النافذة.</p>
+<p>لاحظ أنه في دالّة stripMenu إن تعليمة مثل<span style="font-family: 'Consolas';" dir="ltr">mnuEdit.DropDownItems.Add(mnuCopy)</span>  تم ضخ ناتجها إلى دالّة ignore وذلك لأن ناتجها ليس من نوع unit لذا وجب ربط قيمتها بإسم بواسطة let أو تحويلها إلى قيمة من نوع unit باستخدام دالّة ignore.</p>
+
+ 
+<h2>استخدام <span dir="ltr">F# Interactive</span> للتعامل مع النوافذ </h2>
+<p>أحيانا، نحتاج إلى أن نتعامل بصورة مؤقتة مع النوافذ، فقط لإجراء اختبارات على بعض نواحي برامجنا. هذا الأمر بالإمكان تحقيقيه دون أن نضطر إلى إنشاء برنامج خاص بذلك،  حيث يمكن أن نستعين بنظام F# التفاعلي F# Interactive لإنشاء نافذة وتوصيفها وتشغيلها.</p>
+<p>(يجب إنهاء التعبير بفاصلتين منقوطتين ثم مفتاح الإدخال؛ ليقوم التفاعلي بإرساله للمترجم)</p>
+<p>أولا نطلب من التفاعلي التعرّف على مكتبة System.Windows.Forms :</p>
+<div class="div-code"><pre>
+> <b>open System.Windows.Forms;;</b>
+</pre></div>
+<p>ثم إنشاء نافذة وتحديد عنوانها:</p>
+<div class="div-code"><pre>
+> <b>let f = new Form(Text = "My Test Form");;</b>
+</pre></div>
+
+<p>وسيقوم التفاعلي بتقييم هذا التعبير وطباعة نتيجته وهي قيمة f:</p>
+<div class="div-code"><pre>
+val f : Form = System.Windows.Forms.Form, Text: My Test Form 
+</pre></div>
+<p>الآن علينا فقط إظهار هذه النافذة بالأمر التالي:</p>
+<div class="div-code"><pre>
+> <b>f.Show();;</b>
+</pre></div>
+<p>وسيردّ علينا التفاعلي بطباعة نتيجة التعبير وهي unit</p>
+<div class="div-code"><pre>
+val it : unit = ()
+> 
+</pre></div>
+<p>وفي نفس الوقت يظهر لنا النافذة  كما في الشكل التالي:</p>
+
+<center><img alt="" src="24.png" /></center>
+
+<p>التعبير التالي لإنشاء زرّ وتحديد النصّ عليه:</p>
+<div class="div-code"><pre>
+> <b>let btn = new Button(Text = "OK");;</b>
+val btn : Button = System.Windows.Forms.Button, Text: OK
+</pre></div>
+<p>ثم تحديد دالّة لتنفيذها عند الحدث Click للزرّ:</p>
+<div class="div-code"><pre>
+> <b>btn.Click.Add(fun _ -> f.Text <- "My new form is Ok.");;</b>
+val it : unit = ()
+</pre></div>
+<p>ثم إضافة مكوّن الزرّ إلى النافذة:</p>
+<div class="div-code"><pre>
+> <b>f.Controls.Add(btn);;</b>
+val it : unit = ()
+</pre></div>
+<p>سيظهر مكوّن الزرّ فورا على النافذة. وإذا ضغطنا على الزر؛ سيتم تغيير عنوان النافذة:</p>
+
+<center><img alt="" src="25.png" /></center>
+
+<p>التعابير السابقة، يمكن أيضا كتابتها في أي مكان في المحرّر وإرسالها للتفاعلي لترجمتها ووطباعة قيمتها، وذلك بوضع مؤشر المحرر على السطر المراد تقييمه والضغط على مفتاحي Alt + Enter ، أو من لائحة الأوامر Execute In Interactive .</p>
+<p>أيضا يمكن تظليل الأسطر التي تحوي هذه التعابير وإرسالها دفعة واحدة للتفاعلي بنفس الطريقة لتقييم أو تنفيذ هذه التعابير. (كما فعلنا عند اختبار الدالّة سابقا)</p>
+
+<div class="div-code">
+<pre>
+<span style="background: #9CDCFE;line-height: normal;">
+<span style="color:blue;">open</span> System.Windows.Forms
+<span style="color:blue;">let</span> f = <span style="color:blue;">new</span> Form(Text =<span style="color:#a31515;">&quot;My Test Form&quot;</span>)
+f.Show()
+<span style="color:blue;">let</span> btn = <span style="color:blue;">new</span> Button(Text = <span style="color:#a31515;">&quot;OK&quot;</span>)
+f.Controls.Add(btn)
+</span>
+</pre>
+</div>
+<p>&nbsp;</p>
+<div class="div-note">
+<b>نظام REPL</b>
+<p>يعرف نظام تشغيل الكود تفاعليا بإسم REPL وهي اختصار لكلمات Read, Evaluate, Print, Loop وتعني قراءة التعبير البرمجي، تقييمه (تحويله إلى قيمة)، طباعة القيمة، تكرار العملية.</p>
+<p>نظام REPL في <span dir="ltr">F#</span> يُسمّى F# Interactive ، يتم فيه كتابة التعبير في سطرأو أكثر، ويختم التعبير  بفاصلتين منقوطتين ثم مفتاح الإدخال، ليتم إرساله لمترجم F# لتقييمه، فإذا كان التعبير صحيحا؛ يقوم النظام بطباعة القيمة الناتجة ونوعها.</p>
+<p>يسهم التفاعلي بشكل كبير في زيادة انتاجية المبرمج واختصار وقته البرمجي؛ حيث يمكنه اختبار التعابير البرمجية والدوال في برامجه من خلاله مباشرة، وبذلك لن يحتاج لتشغيل برنامجه كل مرة يريد فيها اختبار شيئ جديد.</p>
+
+</div>
+
+
+<h3>خاتمة</h3>
+<p>لم أستطع أن أخرج بخاتمة ترضيني لهذا المقال، لكن أثناء تفكيري في ذلك؛ خطر على بالي هذا السؤال:</p>
+<p>كم مرّة وردت كلمة دالّة أو دالّية في هذه المقالة؟</p>
+<p>لمعرفة ذلك، قمت بحفظ محتوى هذه المقالة في ملف نصي، ثم نفذت التعابير التالية:</p>
+
+	
+<div class="div-code">
+<pre>
+<span style="color:blue;">open</span> System
+<span style="color:blue;">open</span> System.IO
+
+<span style="color:blue;">let</span> s = <span style="color:#2b91af;">File</span>.ReadAllText(<span style="color:#a31515;">@&quot;C:\Trash\article.txt&quot;</span>)
+s.Split([|<span style="color:#a31515;">&#39; &#39;</span>|]) |&gt;&nbsp;<span style="color:#2b91af;">Array</span>.filter (<span style="color:blue;">fun</span> x <span style="color:blue;">-&gt;</span> x.Contains(<span style="color:#a31515;">&quot;دال&quot;</span>)) |&gt; <span style="color:#2b91af;">Array</span>.length
+</pre>
+
+</div>
+<p>وكانت النتيجة:</p>
+
+<div class="div-code">
+<pre>
+  val it : int = 163
+</pre>
+</div>
+</div> <!-- Article -->
+</center>
+  <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+  
+
+
+
+
+
+
+
+</body>
+</html>
