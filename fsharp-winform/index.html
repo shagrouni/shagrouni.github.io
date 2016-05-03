@@ -5,23 +5,35 @@
     <meta charset="utf-8" />
     <link href="fsharp.css" type="text/css" rel="stylesheet" />
   
-    <title></title>
-    <style type="text/css">
-      .auto-style1 {
-        font-family: "Courier New";
-        color: black;
-      }
-    </style>
+    <title>تعرّف على F# عمليا</title>
+
+    <meta name="keywords" content="f#, برمجة, windows forms, دروس برمجة, البرمجة الدالية, كورس" />
+    <meta name="description" content="درس عملي في مفاهيم البرمجة الدالية باستخدام لغة F# ومن خلال إنشاء تطبيق ويندوز" />
 </head>
 <body>
 
 
 
   <center>
-  <img alt="" src="sky.jpg" />
-  <div class="div-article">
-<img alt="" src="IHeartFsharp160.png" />
-<h1>تعرّف على <span dir="ltr">F#</span> عمليا</h1>
+  <a href ="../index.html">
+  <img alt="" src="sky.jpg" /></a>
+  <div class="div-article">  
+<table style="width: 100%;">
+        <tr>
+            <td>
+<h1>تعرّف على <span dir="ltr">F#</span> عمليا</h1>  
+            <td align="left" >
+
+<span style="font-size: 28px; font-weight: bold;">خالد الشقروني&nbsp;&nbsp;&nbsp;</span>05 05 2016
+            </td>
+        </tr>
+    </table>
+
+<!--<img alt="" src="IHeartFsharp160.png" /> 
+<div align="left"><span style="font-weight: bold;">خالد الشقروني</span> 05 05 2016</div>
+-->
+
+
 <p>هذه المقالة محاولة للتقرب من مفاهيم البرمجة الدالّية عموما والبرمجة بلغة <span dir="ltr">F#</span> خصوصا. مدخلنا في ذلك إنشاء برنامج ويندوز مكتبي بسيط بإستخدام عناصر واجهة الاستخدام Windows Forms في بيئة .Net ومن خلاله سنرى ماذا تعني مفاهيم ومصطلحات مثل Immutability و Pattern matching و Functional programming و Recursive function و Type inference و Lambda وغيرها من المفاهيم.</p>
 
 <p>سنتعرّف أيضا عن كيفية دعم <span dir="ltr">F#</span> للمذاهب paradigm البرمجية غير الدالّية مثل المنحى للكائن Object Oriented والأسلوب الحتمي / الإجرائي imperative/ procedural وكيفية استخدامها للتعامل مع مكتبات بيئة .Net </p>
@@ -257,15 +269,15 @@ Program.fs ، هنا يستحسن أن نفصل التعليمات الخاصة 
 <center>
 <div class="div-note">
 <h3>= مقابل <span dir="ltr"><-</span></h3>
-<p>في <span dir="ltr">F#</span> المعامل = تعني تعريف أو تحديد definition ولا تعني التخصيص assignment للقيم، كما قد تعني المساواة equality فإذا قلنا <code>let a = 5</code> فإن هذا يعني أن ننشئ رمزا إسمه a ونحدد قيمته بأن تكون مساوية ل 5 وقيمته لاتتبدل لأن الرمز a هنا ليس متغيّر immutable. فإذا أتبعناه بتعبير a = 6 فإن <span dir="ltr">F#</span>  يتعامل معه على أنه تعبير منطقي boolean وناتجه في هذه الحالة false لأن a  لا تساوي 6. 
-بالمقابل فإن المعامل <span dir="ltr"><-</span> تعني تخصيص قيمة لمتغير متحوّل mutable مثل:</p>
+<p>في <span dir="ltr">F#</span> المعامل = تعني تعريف أو تحديد definition ولا تعني التخصيص assignment للقيم، كما قد تعني المساواة equality فإذا قلنا <code>let a = 5</code> فإن هذا يعني أن ننشئ رمزا إسمه a ونربط قيمته بـ 5 ، وقيمته لاتتبدل لأن الرمز a هنا ليس متحوّل immutable. فإذا أتبعناه بتعبير a = 6 فإن <span dir="ltr">F#</span>  يتعامل معه على أنه تعبير منطقي boolean وناتجه في هذه الحالة false لأن a  لا تساوي 6. </p>
+<p>بالمقابل فإن المعامل <span dir="ltr"><-</span> تعني تخصيص قيمة لمتغير متحوّل mutable مثل:</p>
 
 <pre style="color:black;text-align:left">
     <span style="color:blue;">let mutable</span> = 5
     a &lt;- 6</pre>
 
-<p>لأن المتغير a تم تعريفة على أنه mutable أي متحول يتم استخدام المعامل <span dir="ltr"><-</span>  لتغيير قيمته.
-ولأن خصائص المكونات مثل خاصية Text للمكون lbl هي متغيرات متحولة؛ نستخدم المعامل <span dir="ltr"><-</span>  لتغيير قيمها.  للإستزادة أنظر القيم والمتغيرات في <span dir="ltr">F#</span></p>
+<p>لأن المتغير a تم تعريفة على أنه mutable أي متحول؛ يتم استخدام المعامل <span dir="ltr"><-</span>  لتغيير قيمته.
+ولأن خصائص المكونات مثل خاصية Text للمكون lbl هي متغيرات متحولة؛ نستخدم المعامل <span dir="ltr"><-</span>  لتغيير قيمها.  
 
 </div></center>
 
@@ -347,7 +359,7 @@ Program.fs ، هنا يستحسن أن نفصل التعليمات الخاصة 
 
 <p>لكن قبل ذلك أودّ أن نتفحّص تعريف هذه الدّالة بشيء من التفصيل حتى نتعرّف من خلالها على بعض جوانب الدوال في <span dir="ltr">F#</span> عموما.</p>
 
-<p>الدالّة يجب أن تستقبل معطى argument من نوع EventArgs ، وهنا لم نرمز للمعطى ونربطه بأي إسم كما فعلنا سابقا عندما أعطينا الرمز e لأنه ببساطة لن نحتاج له لكي نستخدمه، لذلك اكتفينا بوضع علامة _ (علامة wildcard character)، أي كأننا نقول: لا يهمنا المعطى الذي تستقبله الدالّة ولا نريد ربط قيمته بأي إسم.</p>
+<p>الدالّة يجب أن تستقبل معطى argument من نوع EventArgs ، وهنا لم نرمز للمعطى ونربطه بأي إسم كما فعلنا سابقا عندما أعطينا الرمز e لأنه ببساطة لن نحتاج له لكي نستخدمه، لذلك اكتفينا بوضع علامة _ (علامة wildcard character)، أي كأننا نقول: لا يهمنا المعطى الذي تستقبله الدالّة ولا داعي لربط قيمته بأي إسم.</p>
 
 <p>بعد تحديد اسم الدالّة و تحديد المعطى الذي تستقبله نضع علامة = التي بعدها يكون جسم الدالّة. وبهذا كأننا نقول بأن قيمة Reverse تساوي قيمة ناتج التعبيرات التي في جسم الدالّة.</p>
 
@@ -378,7 +390,7 @@ btReverse.Click.Add(x.Reverse)
 <p>مع هذا، بإمكانا إذا شئنا أن نحدّد نوع البيانات صراحة كما في النسخة التالية من الدالّة:</p>
 <div class="div-code">
 <pre>
-    <span style="color:blue;">member</span> <span style="color:blue;">private</span> x.Reverse (_:&nbsp;<span style="color:#2b91af;">EventArgs</span>) : <span style="color:#2b91af;">unit</span>
+    <span style="color:blue;">member</span> <span style="color:blue;">private</span> x.Reverse (_:&nbsp;<span style="color:#2b91af;">EventArgs</span>) : <span style="color:#2b91af;">unit</span> =
       txt2.Text &lt;- txt1.Text </pre>
 
 </div>
@@ -391,7 +403,7 @@ btReverse.Click.Add(x.Reverse)
 <p>نوع unit شبيه بـ void في بعض اللغات. وفي حين أن النوع unit هو نوع بدون قيمة، أو بشكل أدق؛ نوع له قيمة وحيدة تشير لعدم وجود قيمة، نجد أن void في لغات أخرى قد تعني لاشيء أو بلا نوع. لذلك يمكنك في <span dir="ltr">F#</span> تعريف اسم أو رمز من نوع unit وتربطه بقيمته (أي بدون قيمة) كأن تقول: <span dir="ltr">let x = ()</span> بينما لا يمكنك ذلك في <span dir="ltr">C#</span>:</br><span dir="ltr">void x;</span></p>
 <h3>استخدام الدالّة ignore</h3>
 
-<p>أحيانا نستخدم دالّة ما أو تعبير ما كتعليمة statment تقوم بأمر محدد، ولا يهمنا قيمة ناتجها، ولا نحتاج لربطها بمعرّف (خاصة عند التعامل مع دوال مكتبات .Net) فإذا كانت هذه الدالّة أو التعبير لا تردّ قيمة من نوع unit ؛ فإن <span dir="ltr">F#</span> ينبّه بأن قيمة ناتج هذه الدالّة لم يتم ربطها بأي إسم. فمثلا عند كتابة التعليمة التالية:</p>
+<p>أحيانا نستخدم دالّة ما أو تعبير ما كتعليمة statment تقوم بأمر محدد، ولا يهمنا قيمة ناتجها، ولا نحتاج لربطها بمعرّف (خاصة عند التعامل مع دوال مكتبات <span dir="ltr">.Net</span>) فإذا كانت هذه الدالّة أو التعبير لا تردّ قيمة من نوع unit ؛ فإن <span dir="ltr">F#</span> ينبّه بأن قيمة ناتج هذه الدالّة لم يتم ربطها بأي إسم. فمثلا عند كتابة التعليمة التالية:</p>
 <pre>
   System.Console.ReadKey()
 </pre>
@@ -425,7 +437,7 @@ btReverse.Click.Add(x.Reverse)
 
 <h3>باستخدام دورانية for</h3>
 
-<p>هذه الطريقة التي نستخدمها عادة في برامجنا باللغات الإلزامية imperative languages مثل <span dir="ltr">C#</span> وجافا، حيث يتم إنشاء دالّة reverseChars مهمتها استقبال سلسلة حروفية string والمرور على حروفها بدأ من آخر حرف حتى أول حرف. </p>
+<p>هذه الطريقة التي نستخدمها عادة في برامجنا باللغات الإلزامية imperative languages مثل <span dir="ltr">C#</span> وجافا، سننشئ دالّة reverseChars مهمتها استقبال سلسلة حروفية string والمرور على حروفها بداية من آخر حرف وحتى أول حرف. </p>
 <p>لبناء سلسلة جديدة معكوسة باستخدام تركيبة for يمكن أن نصنع شيئا مثل التالي:</p>
 
 <div class="div-code">
@@ -436,7 +448,7 @@ btReverse.Click.Add(x.Reverse)
         <span style="color:blue;">let</span>&nbsp;<span style="color:blue;">mutable</span>&nbsp;newText&nbsp;=&nbsp;<span style="color:#a31515;">&quot;&quot;</span>
         <span style="color:blue;">for</span>&nbsp;x&nbsp;=&nbsp;s.Length&nbsp;-&nbsp;1&nbsp;<span style="color:blue;">downto</span>&nbsp;0&nbsp;<span style="color:blue;">do</span>
           newText&nbsp;&lt;-&nbsp;newText&nbsp;+&nbsp;s.[x..x]&nbsp;&nbsp;
-      newText</b>
+        newText</b>
 
       <span style="color:blue;">let</span>&nbsp;s2&nbsp;=&nbsp;reverseChars&nbsp;txt1.Text
       txt2.Text&nbsp;&lt;-&nbsp;s2
@@ -446,7 +458,7 @@ btReverse.Click.Add(x.Reverse)
 <p>كما تلاحظ؛ دالّة reverseChars هي دالّة داخلية nested function قمنا بوضعها داخل دالّة x.Reserve  حتى تكون قريبة منا لأغراض هذا الشرح، لكن يمكننا طبعا وضعها في مكان آخر قبل هذه النقطة أو حتى في ملف آخر. ثم أنشأنا المعرّف s2 وربطناه بقيمة ناتج الدالّة بعد أن أمررنا لها قيمة txt1.Text . أخيرا قمنا بإسناد قيمة s2 للخاصية txt2.Text.</p>
 <p>الدالّة تقريبا واضحة ولا تحتاج لشرح كبير، لكن لا يمنع من الإشارة لبعض الملاحظات:</p>
 <ul>
-<li>الدالّة تستقبل مُعطى واحد argument و هو s من نوع string وهنا قمنا بالتنويه بنوع المعطى صراحة، لأن <span dir="ltr">F#</span> قد يجد صعوبة هنا في استنتاج نوع المعطى. (دالّة Length لديها عدة استنساخات override ولن يعرف المترجم أيا منها سيجري استخدامه)</li>
+<li>الدالّة تستقبل مُعطى واحد argument و هو s من نوع string وهنا قمنا بالتنويه بنوع المعطى صراحة، لأن <span dir="ltr">F#</span> قد يجد صعوبة هنا في استنتاج نوع المعطى. (دالّة Length لديها عدة استنساخات override لعدّة أنواع، ولن يعرف المترجم أيا منها سيجري استخدامه)</li>
 <li>
 <div>
 التعبير <span dir="ltr">s.[x..x]</span>  ، إذا افترضنا أن x تساوي 4 ؛ فهو يعني أن يستقطع من سلسلة s سلسلة أحرف تبدأ من الحرف الخامس إلى الحرف الخامس (أي حرفا واحدا). هنا تعاملنا مع s وكأنها مصفوفة أحرف. لكننا لماذا لم نعبّر عن هذا بمجرد إعطاء رقم موضع الحرف فقط مثل <span dir="ltr"> s.[x]</span> ونقول <span dir="ltr">newText + s.[x]</span>   ؟ السبب أن <span dir="ltr">s.[x]</span> سوف تعطينا قيمة من نوع char وهنا لا نستطيع أن نجمع بين المتغير newText ونوعه string مع قيمة من نوع char ما لم نقوم بتحويل هذه القيمة إلى نوع string مثل:
@@ -471,7 +483,7 @@ btReverse.Click.Add(x.Reverse)
 <div class="div-code">
 <pre>  val reverseChars : s:string -> string</pre>
 </div>
-<p> بذلك تكون الدالّة جاهزة لإختبارها، وذلك بكتابة إسم الدالّة وقيمة المعطى لها، وإنهاء التعبير بفاصلتين منقوطتين ثم مفتاح الادخال.</p>
+<p> بذلك تكون الدالّة جاهزة لإختبارها، نأتي لمربّع <span dir="ltr">F# Interactive</span> ونقوم بكتابة إسم الدالّة وقيمة المعطى لها، وإنهاء التعبير بفاصلتين منقوطتين ثم مفتاح الادخال.</p>
 <div class="div-code">
 <pre>
   <b>> reverseChars "abcdef";;</b>
@@ -503,23 +515,23 @@ btReverse.Click.Add(x.Reverse)
 <pre style="background:white;">
     <span style="color:blue;">member</span>&nbsp;<span style="color:blue;">private</span>&nbsp;x.Reverse&nbsp;_
 <b>
-      <span style="color:blue;">let</span>&nbsp;<span style="color:blue;">rec</span>&nbsp;reverseChars&nbsp;s&nbsp;newText&nbsp;=
-        <span style="color:blue;">match</span>&nbsp;s&nbsp;<span style="color:blue;">with</span>
-        |<span style="color:#a31515;">&quot;&quot;</span>&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;newText
-        |_&nbsp;&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;reverseChars&nbsp;s.[1..]&nbsp;(s.[0..0]&nbsp;+&nbsp;newText)
+      <span style="color:blue;">let rec</span> reverseChars s newText =
+        <span style="color:blue;">match</span>  <span style="color:blue;">with</span>                                      <span style="color:green;">//(1)</span>
+        |<span style="color:#a31515;">&quot;&quot;</span>&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;newText                                   <span style="color:green;">//(2)</span>
+        |_  <span style="color:blue;">-&gt;</span> reverseChars s.[1..]&nbsp;(s.[0..0] + newText) <span style="color:green;">//(3)</span>
 </b>
       <span style="color:blue;">let</span>&nbsp;s2&nbsp;=&nbsp;reverseChars&nbsp;txt1.Text&nbsp;<span style="color:#a31515;">&quot;&quot;</span>
       txt2.Text&nbsp;&lt;-&nbsp;s2
 </pre>
 </div>
-
-<p>الدالّة تستقبل معطيين: s، ويحمل النص المطلوب قلبه، و newText ويحمل نصا مقلوبا من آخر عملية استدعاء للدالّة. (يتم الفصل بين محددات الدالّة parametes بفراغ وكذلك الفصل بن المعطيات arguments)</p>
-<p>في هذه الدّالة استخدمنا إحدى أشهر أدوات البرمجة الدالّية لفرز البيانات ,والتحكّم في تدفّقها؛ وهي مطابقة الأنماط pattern matching . فبدلا من استخدام تركيبة if then else لفحص قيمة s استخدمنا تركيبة match with لمراقبة نمطين لقيمة s ، النمط الأول أن تكون قيمة s تساوي ""، والنمط الثاني أن تكون قيمة s أية حروف أخرى، وقد عبّرنا عن النمط التالي بعلامة _ .</p>
+<p>
+في هذه الدّالة استخدمنا إحدى أشهر أدوات البرمجة الدالّية لفرز البيانات ,والتحكّم في تدفّقها؛ وهي مطابقة الأنماط pattern matching . الشبيه بـ switch-case . استخدمنا تركيبة match with لمراقبة نمطين لقيمة s ، النمط الأول أن تكون قيمة s تساوي ""، في هذه الحالة ترد قيمة newText ، والنمط الثاني أن تكون قيمة s أية حروف أخرى، وقد عبّرنا عن النمط التالي بعلامة _ ، وفي هذه الحالة يتم مناداة الدالة لنفسها يمعطيات جديدة.
+</p>
 <p>لا ننسى أن ناتج أية دالّة هو آخر تعبير يتحقّق فيها.</p>
 
 <center>
 <div class="div-note">
-<p>تتجلّى فائدة pattern matching أكثر عند تعدد الخيارات والشروط وكذلك تنوع وتعدد القيم بتركيباتها المختلفة التي يتعيّن تفكيكها وفحصها، بطريقة تتفوق بها على أدوات if أو switch case، لذلك وبسبب بساطة الشرط الذي احتجناه في الدالّة، ربما يكون الكود أكثر مقروئية وبساطة لو كان بالشكل التالي:</p>
+<p>تتجلّى فائدة pattern matching أكثر عند تعدد الخيارات والشروط وكذلك تنوع وتعدد القيم بتركيباتها المختلفة التي يتعيّن تفكيكها وفحصها، بطريقة تتفوق بها على أدوات if أو switch-case، لذلك وبسبب بساطة الشرط الذي احتجناه في الدالّة، ربما يكون الكود أكثر مقروئية وبساطة لو كان بالشكل التالي:</p>
 
 <pre>
   <span style="color:blue;">if</span>&nbsp;s&nbsp;=&nbsp;<span style="color:#a31515;">&quot;&quot;</span><span style="color:blue;"> then</span>&nbsp;newText
@@ -866,6 +878,7 @@ s.Split([|<span style="color:#a31515;">&#39; &#39;</span>|]) |&gt;&nbsp;<span st
   val it : int = 163
 </pre>
 </div>
+
   <p>&nbsp;</p>
   <p>&nbsp;</p>
 <hr />
@@ -895,22 +908,15 @@ var disqus_config = function () {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
   ga('create', 'UA-74950849-1', 'auto');
   ga('send', 'pageview');
 </script>
     <script id="dsq-count-scr" src="http://shagrouni.disqus.com/count.js" async></script>
 </div> <!-- Article -->
-
 </center>
   <p>&nbsp;</p>
-
-  
-
-
-
-
-
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
 
 
 </body>
