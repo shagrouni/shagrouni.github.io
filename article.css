@@ -41,7 +41,7 @@ h1{
   font-size: 17px;
   color: black;
   direction:ltr;
-  width: 800px;
+  width: 90%;
   text-align: left; 
   border: 1px solid #C0C0C0;
   padding: 10px;
@@ -57,7 +57,7 @@ pre
   text-align: left; 
 }
 .div-note{
-  width: 800px;
+  width: 90%;
   background-color: #F0F3FB;
   text-align: justify;
   padding: 10px;
