@@ -1,0 +1,614 @@
+﻿<!DOCTYPE html dir="rtl">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link href="../article.css" type="text/css" rel="stylesheet" />
+  
+    <title>مغامرات في دلفي</title>
+
+    <meta name="keywords" content="دلفي, برمجة, windows forms, دروس بلية, كورس" />
+    <meta name="description" content="بعض الحيل البرمجية في لغة دلفي" />
+</head>
+<body>
+
+
+
+  <center>
+  <a href ="../index.html">
+  <img alt="" src="sky.jpg" /></a>
+  <div class="div-article">  
+<table style="width: 100%;">
+        <tr>
+            <td>
+<h1>مغامرات في دلفي</h1>  
+            <td align="left" >
+
+<span style="font-size: 28px; font-weight: bold;">خالد الشقروني&nbsp;&nbsp;&nbsp;</span>20 06 2016
+            </td>
+        </tr>
+    </table>
+
+<!--<img alt="" src="IHeartFsharp160.png" /> 
+<div align="left"><span style="font-weight: bold;">خالد الشقروني</span> 05 05 2016</div>
+-->
+
+<p>
+يكثر في برامجي استخدامي لدوال تغيير البيانات من نوع لآخر، و خاصة دالتي IntToStr و StrToInt ، ومع كثرة استخدامها و تنوع البيانات المراد تحويلها، تصير الأمور مزعجة بالنظر إلى طول أسماء هذه الأدوات وحرصي على كتابتها بالشكل الملائم بمراعاة الأحرف العالية والمنخفضة.
+</p>
+<p>
+صحيح أن أصابعي أمست معتادة على طباعة أحرف بعض الإجرائيات و بسرعة كبيرة، لكن يظل الأمر مزعجا خاصة في الإجرائيات التي تتطلب أكثر من مُعطى واحد Arguments أو التي لديها أكثر من توأم overload، وما يتبعها من مراجعة المساعدة للبحث عن الإسم الصحيح للإجرائية المناسبة. ويزداد الأمر ارباكا إذا استخدمت ثلاث أو أربع إجرائيات في تعليمة واحدة، فتجتاز التعليمة الواحدة الفاصل العمودي على يمين المحرر والمحدد بثمانين حرفا مما يؤثر على مقروئية البرنامج و تتبع خطواته (أو هكذا يقولون). 
+</p>
+<p>
+لذا فكرت بأن أجد طريقة أريح بها أصابعي ودماغي من عناء تذكر وكتابة الأسماء الطويلة لإجرائيات ودوالّ تحويل نوع البيانات، وذلك بتغليفها في إجرائيات ذات أسماء أقصر، وتوحيدالمتشابه منها في إسم واحد ما أمكن ذلك مستغلا  ميزة إعادة التحميل overload عند تعريف الإجرائيات.
+</p>
+
+<h2>تحويل الأرقام إلى حروف</h2>
+<p>
+ بدأت بموضوع تحويل الأرقام إلى حروف. و بالذات مع الدالة IntToStr التي تقوم بتحويل رقم ذو عدد صحيح إلى أحرف نصية، مثل التالي:</p>
+
+
+
+  
+  <div class="div-code">
+Caption := IntToStr(i);
+  </div>
+<p>
+هذه الدالة تتكون من ثمانية أحرف،  فقمت بتغليفها wrap داخل دالة function يكون إسمها أقصر، فاخترت الاسم
+ <code><span dir="ltr">"_S"</span></code> بحيث تكون كالتالي:</p>
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> X: <span class="k">integer</span>): <span class="k">string;</span>
+<span class="k">begin</span>
+  result := IntToStr(X);
+<span class="k">end</span>;
+</pre>
+</div>
+<p>بذلك كلما أردت تحويل عدد صحيح إلى نصّ أستدعي هذه الدالة:</p>
+<div class="div-code">
+Caption := _S(i);
+</div>
+<p>لكن هذه فقط تقوم بتحويل العدد الصحيح  Integer ماذا لو كان العدد من نوع  Single ؟</p>
+
+<p>لحسن الحظ كل هذه الأنواع يمكن جمعها تحت النوع Extended وإنشاء دالّة لتحوبل هذا النوع وتسمية هذه الدالّة بنفس اسم الدالّة الأولى أي _S مع تزيينها بأمر overload . أولا قمت بإضافة  الأمر overload للدالة السابقة:</p>
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> i: <span class="k">integer</span>): <span class="k">string</span>; <span class="k">overload</span>;
+</pre>
+</div>
+<p>ثم عرّفت دالّة أخرى مع محدد parameter من نوع extended :</p>
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> AValue: <span class="k">Extended</span>): <span class="k">string</span>; <span class="k">overload</span>;
+</pre>
+</div>
+<p>وهذا جسم الدالّة:</p>
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> AValue: <span class="k">Extended</span>): <span class="k">string</span>
+<span class="k">begin</span>
+  result := FloatToStr(AValue);
+<span class="k">end</span>;
+</pre>
+</div>
+<p>لم لا نضع مزيدا من السكّر ونصنع دالّة أخرى نجعلها تقوم بضبط عدد الخانات بعد الفاصلة:</p>
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> AValue: <span class="k">Extended</span>; Digits: <span class="k">Integer</span>): <span class="k">string</span>
+<span class="k">begin</span>
+  result := FloatToStrF(AValue, ffFixed, 16, Digits);
+<span class="k">end</span>;
+</pre>
+</div>
+
+<p>بهذا يمكن تطبيق هذه الدالّة على الرقم 45687.245654 بحيث تعطينا تمثيل نصي بثلاث خانات بعد الفاصلة</p>
+<div class="div-code">
+<pre>
+_S(45687.245654, 3)
+</pre>
+</div>
+<p>فنتحصّل على 45687.246.</p>
+
+<p>من بين الأنواع الأخرى التي احتجت لتسهيل عملية تحويلها إلى نص؛ النوع OleVariant، والتي كثر استخدامي لها عند التعامل المباشر مع قيم الحقول في قواعد البيانات تحت مظلة ADO. أيضا كانت عونا كبيرا لي لاختصار الوقت ومجهود الكتابة عند التعامل مع قيم عناصر XML:</p>
+
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> Value: <span class="k">OleVariant</span>): <span class="k">string</span>;
+<span class="k">begin</span>
+  <span class="k">if</span> Value <> null <span class="k">then</span>
+    result := Value
+  <span class="k">else</span>
+    result := '';
+<span class="k">end</span>;
+</pre>
+</div>
+<p>التحويل إلى نص بنفس مسمّى الدالة يمكن أن يشمل التركيبات records ، مثلا هذه الدالة تقوم بتحويل قيمة من نوع TPoint إلى نص:</p>
+
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> APoint: TPoint): <span class="k">string</span>;
+<span class="k">begin</span>
+  Result := Format('(%d,%d)', [APoint.X, APoint.y]);
+<span class="k">end</span>;
+</pre>
+</div>
+<p>لأحصل على تمثيل نصي لقيمة من نوع TPoint مثل : (400,600)</p>
+<p>و أخرى لمصفوفة من عناصر نوع TPoint:</p>
+
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> Points: array of TPoint): <span class="k">string</span>;
+<span class="k">var</span>
+  i: <span class="k">integer</span>;
+<span class="k">begin</span>
+  Result := '';
+  <span class="k">for</span> i := 0 <span class="k">to</span> high(Points) <span class="k">do</span>
+  <span class="k">begin</span>
+    Result := result + Format('(%d,%d) ',[Points[i].X, Points[i].y]);
+  <span class="k">end;</span>
+  Result := Trim(result);
+<span class="k">end;</span>
+</pre>
+</div>
+
+<p>أيضا أخرى خاصة بالنوع TRect :</p>
+
+<div class="div-code">
+<pre>
+<span class="k">function</span> _S(<span class="k">const</span> ARect: TRect): <span class="k">string</span>;
+<span class="k">begin</span>
+  Result := Format('(%d,%d)',[ARect.TopLeft.X, ARect.TopLeft.Y]) + ' ' +  
+            Format('(%d,%d)',[ARect.BottomRight.X, ARect.BottomRight.Y]);
+<span class="k">end</span>;
+</pre>
+</div>
+
+<p>هذه التحويلات تسهّل العمل كثيرا عندما يتعلق الأمر بتسجيل الكيانات التي تحوي قيم من هذه الأنواع في ملفات نصية مثل ملفات log أو عند عمليات serialization والتحويل من كائنات إلى صيغ أخرى مثل XML .</p>
+
+<h2>تحويل نوع التاريخ</h2>
+
+<p>للأسف لم أستطع صنع دالّة لتحويل نوع التاريخ إلى نصّ تحت نفس الإسم أي: <code><span dir="ltr">_S</span></code> ، وذلك لأن نوع التاريخ  TDateTime هو في الأصل من نوع Double ، ولهذا إذا مررّنا للدالة قيمة من نوع TDateTime فربما يتعامل معها كرقم وتعطينا التمثيل النصي لهذا الرقم، كذلك إذا مرّرنا قيمة من نوع Double فربما تأتينا النتيجة على صيغة نصية للتاريخ والوقت. الكود التالي يوضح هذا الإشكال:</p>
+
+<div class="div-code">
+<pre>
+<span class="k">var</span>
+  Adouble: <span class="k">double</span>;
+<span class="k">begin</span>
+  Adouble := 123456.123456;
+  
+  caption := _S(Now)  + <span class="s">' * '</span> +
+             _S(123456.123456) + <span class="s">' * '</span> + 
+             _S(Adouble);
+</pre>
+</div>
+<p>الناتج سيكون:</p>
+
+<pre>
+<span class="s">'2016-03-19 01:02:01 * 123456.123456 * 2238-01-03 02:57:46'</span>
+</pre>
+
+<p>لاحظ أن الناتج يختلف بين القيمة التي مرّرت مباشرة للدالة و تلك التي تمّ تمريرها كمتغيّر من نوع double يحمل نفس القيمة.</p>
+<p>لذلك استحدث دالّة بإسم آخر : <code><span dir="ltr">_SD</span></code> لتحويل التاريخ إلى نص:</p>
+
+<div class="div-code">
+<pre>
+<span class="k">function</span> _SD(<span class="k">const</span> ADateTime: TDateTime): <span class="k">string</span>;
+<span class="k">begin</span>
+  result := DateTimeToStr(ADateTime);
+<span class="k">end</span>;
+</pre>
+</div>
+
+<h2>التحويل لأرقام</h2>
+<p>بنفس السياق قمت باستحداث دوال لتحويل نوع نصي string إلى نوع integer بتسمية <code><span dir="ltr">_i</span></code> مثل:</p>
+
+<div class="div-code">
+<pre>
+<span class="k">function</span> _I(<span class="k">const</span> S: <span class="k">string</span>): <span class="k">integer</span>;
+<span class="k">begin</span>
+  result := StrToIntDef(S, 0);
+<span class="k">end</span>;
+</pre>
+</div>
+
+<p>و أخرى لتحويل الأرقام العشرية إلى عدد صحيح:</p>
+<div class="div-code">
+<pre>
+<span class="k">function</span> _I(<span class="k">const</span> AValue: <span class="k">real</span>): <span class="k">integer</span>;
+<span class="k">begin</span>
+  result := Round(AValue);
+<span class="k">end</span>;
+</pre>
+</div>
+
+<p>كذلك تحويل الصيغ النصية للتاريخ إلى نوع تاريخ، بدالة ذات اسم مختصر:</p>
+<div class="div-code">
+<pre>
+<span class="k">function</span> _D(S: <span class="k">string</span>): TDateTime;
+<span class="k">begin</span>
+  result := StrToDateTime(s);
+<span class="k">end</span>;
+</pre>
+</div>
+
+<h2>من الأسماء إلى الأفعال</h2>
+
+<p>ما قمت به لحدّ الآن هو إنشاء أسماء موجزة لدوال ذات أسماء طويلة.</p>
+
+<p>ماذا عن المهام  ذات التعليمات الطويلة، والتي يتكرّر استخدامي لها؟  ماذا لو قمت بتغليف تعليمات هذه المهام داخل دوال مختصة، بحيت كلما احتجت لتنفيذ مهمة منها أكتفي فقط باستخدام الدالة الخاصة بها دون الخوض في تفاصيل تعليماتها.</p>
+
+<p>لنجرّب:</p>
+
+<h3>مربعات حوار الرسائل Message dialog box</h3>
+
+<p>إذا كنت مثلي مما يفضلون استخدام مربعات حوار الرسائل الأصلية الخاصة بويندوز؛ فحتما تعلم مدى تعدد وتنوع المعطيات والخيارات اللازم إعدادها لإنشاء مربع رسالة بسيطة مثل هذه:</p> 
+
+
+  <center><img alt="" src="1.png" /></center>
+
+  <p>لإنشاء هذه الرسالة يتطلّب الأمر الكود التالي:</p>
+  
+  
+  <div class="div-code">
+    <pre>
+sMsg := <span class="s">'مرحبا.. هذه رسالة ترحيب بسيطة!'</span>;
+sTitle := <span class="s">'رسالة ترحيب'</span>;  
+result := MessageBoxW(Application.Handle, PWideChar(sMsg),
+                        PWideChar(sTitle),
+                        MB_ICONINFORMATION +
+                        MB_Right +
+                        MB_RTLREADING);
+    </pre>
+  </div>
+  
+<p>ويزداد الأمر إرباكا إذا أرت أنواعا أخرى من الرسائل للتنبيه أو الخطأ، أو الطلب من المستخدم الاختيار بين عدة خيارات باالموافقة أو الإلغاء أو تجاوز الأمر، فكل هذه الخيارات عليك أن تصيغها ضمن أمر واحد وهو: MessageBox . لذا وجدت أن الأمر سوف يكون أكثر سهولة لو قسمت أنواع الرسائل بحيث يكون لكل نوع دالّة خاصة به، مثلا واحدة لرسالة استعلام بنعم أو لا، وأخرى تنبيه بموافق و إلغاء الأمر، وهكذا.</p>
+
+<p>بدأت بدالّة عامة أسميتها Msg مشابهة لدالة MessageBox وبنفس محدداتها عدا أن محدّدا نصّ الرسالة والعنوان جعلتهم من نوع string بدل PChar لتسهيل مخاطبتها. هذه الدالة العامة سوف أستخدمها لكي يتم مناداتها من داخل الدوال الأخرى التي اعتزم إنشاؤها.</p>
+
+
+  <div class="div-code">
+    <pre>
+<span class="k">function</span> Msg(Handle: <span class="k">integer</span>; sMsg, sTitle: <span class="k">Widestring</span>; iType: <span class="k">integer</span>): <span class="k">integer</span>;
+<span class="k">begin</span>
+  result := MessageBoxW(Handle, PWideChar(sMsg), PWideChar(sTitle), iType);
+<span class="k">end</span>; 
+</pre>
+  </div>
+
+<p>ثم بدأت بإنشاء دالة لعرض نص رسالة مع أيقونة information وزرّ موافق كالتالي:</p>
+  <div class="div-code">
+    <pre>
+<span class="k">function</span> Msg(sMsg: <span class="k">WideString</span>): <span class="k">integer</span>;
+<span class="k">begin</span>
+  result := Msg(Application.Handle, sMsg, Application.Title, MB_ICONINFORMATION);
+<span class="k">end</span>;
+</pre>
+  </div>
+  
+<p>بهذه الدالة يمكنني الآن أن أنشئ مربع رسالة بسيط بأقل ما يمكن من كود مثل التالي:</p>
+  <div class="div-code">
+    <pre>
+Msg(<span class="s">'Hi Delphi programmers!'</span>);
+</pre>
+  </div>
+
+<p>لأتحصّل عل مربع الرسالة التالية:</p>
+
+<center><img alt="" src="2.png" /></center>
+  
+<p>وهذه :</p>
+  <div class="div-code">
+    <pre>
+<span class="k">function</span> MsgYesNoCancel(sMsg, sTitle: WideString): <span class="k">integer</span>;
+<span class="k">begin</span>
+  result := Msg(Application.Handle, sMsg, sTitle, MB_YESNOCANCEL + MB_ICONQUESTION);
+<span class="k">end</span>;
+</pre>
+  </div>
+  
+  <div class="div-code">
+    <pre>
+MsgYesNoCancel(<span class="s">'Hi Delphi programmers!'</span> + <span class="s">#13</span> + <span class="s">'Shall I continue?'</span>, <span class="s">'Confirm'</span>);
+</pre>
+  </div>  
+
+<center><img alt="" src="3.png" /></center>
+
+<p>كل دالة لها  أخت لها تشبهها لكنها معدةّ للعرض من اليمين لليسار لتكون مناسبة للرسائل باللغة العربية.</p>
+
+  <div class="div-code">
+    <pre>
+<span class="k">function</span> MsgYesNoCancelR(sMsg, sTitle: WideString): <span class="k">integer</span>;
+<span class="k">begin</span>
+  result :=  Msg(Application.Handle, sMsg, sTitle, MB_YESNOCANCEL
+                                                 + MB_ICONQUESTION
+                                                 + MB_RIGHT
+                                                 + MB_RTLREADING);
+<span class="k">end</span>;
+</pre>
+  </div> 
+
+<p>وهذا مثال على تنفيذها:</p>
+  <div class="div-code">
+    <pre>
+if MsgYesNoCancelR(<span class="s">'مرحبا'</span>+ <span class="s">#13</span> + <span class="s">'هل ترغب في الاستمرار؟' , 'تأكيد'</span>) =
+          ID_YES then
+  Msg(<span class="s">'حسنا، سوف نواصل!'</span>);
+</pre>
+  </div> 
+
+<center><img alt="" src="4.png" /></center>
+<center><img alt="" src="5.png" /></center>
+
+
+<p>برغم طول أسماء هذه الدوال حتى يسهل الاستدلال على مهامها؛ إلا أن تذكّر أسماء هذه الدوال لن يكون مشكلة؛ حيث أن كلّ دالة تبدأ ب Msg وبمجرد كتابتها فإن قائمة الاستشعار الذكي للكود intellisense سوف تظهر كافة الدوال التي تبدأ بنفس الأحرف للإختيار من بينها</p>
+
+<center><img alt="" src="6.png" /></center>
+
+<p>المزيد من مربعات الحوار</p>
+<p>جانب آخر من مربعات الحوار التي أحتاجها دائما هي مربع حوار فتح ملف TOpenDialog و حفظ ملف TSaveDialog ، هذا النوع من مربعات الحوار متوفرة في دلفي كمكوّن مرئي مثل TOpenDialog:</p>
+<center><img alt="" src="7.png" /></center>
+
+<p>تثبيت هذا المكون بطريقة مرئية قد يكون مزعجا إذا استخدمته في أكثر من نموذج، أو في وحدات كود ليست مرتبطة بواجهة رسومية، من ناحية أخرى، إذا تعاملت معه بدون زرعه كمكوّن مرئي ، فإن ذلك يتطّلب أسطرا متعددة من التعليمات البرمجية مما يشوش على منطقية  تسلسل برنامجي بحشوه بما ليس له علاقة.  
+لذلك قمت بتغليف تعليمات إنشاء هذا المكوّن في دالة خاصة أسميتها DialogOpenFile، بحيث أتحصّل على إسم ملف من المستخدم كالتالي:</p>
+  <div class="div-code">
+    <pre>
+sFileName := DialogOpenFile('');
+</pre>
+  </div>
+
+<p>كي أحصل على هذه النتيجة:</p>
+<center><img alt="" src="8.png" /></center>
+
+<p>تستقبل الدالّة DialogOpenFile معطى argument  نصي واحد يتم فيه تحديد نوع الملفات التي يتم فرزها عن غيرها، 
+مثل:</p>
+  <div class="div-code">
+    <pre>
+sFileName := DialogOpenFile(<span class="s">'Doc Files|*.doc; *.docx|All Ailes|*.*'</span>);
+</pre>
+  </div>
+
+
+
+<p>في حالة عدم تحديد نوع الملفات كما في مثالنا الأول؛ تقوم الدالة بافتراض أن الملفات المفروزة ستكون بامتداد <span dir="ltr">.txt</span> فيما يلي كود الدالّة:</p>
+
+  <div class="div-code">
+    <pre>
+<span class="k">function</span> DialogOpenFile(Filter: <span class="k">string</span>): <span class="k">string;
+var</span>
+  dlg: TOpenDialog;
+<span class="k">begin</span>
+  dlg := TOpenDialog.Create(nil);
+  <span class="k">try</span>
+    <span class="k">if</span> Trim(Filter) = '' <span class="k">then</span>
+      Filter := <span class="s">'Text Files|*.txt|All Ailes|*.*'</span>;
+
+    dlg.Filter := Filter;
+    <span class="k">if</span> dlg.Execute <span class="k">then</span>
+      result := dlg.FileName
+    <span class="k">else</span>
+      result := '';
+  <span class="k">finally</span>
+    dlg.Free;
+  <span class="k">end</span>;
+<span class="k">end</span>;
+</pre>
+  </div>
+
+<p>وبنفس التعليمات تقريبا؛ يمكن إنشاء دالّة أخرى خاصة بمربع حوار حفظ ملف مع استبدال مكون TSaveDialog ب TOpenDialog .</p>
+
+<h2>الملفات النصية</h2>
+<p>المجال التالي التي سأتعامل معه في سعيي لتسهيل المهام البرمجية المتكرّرة هي الملفات النصية.</p> 
+ 
+<p>توجد أكثر من طريقة للحصول على محتوى ملف نصي، لكن ربما أسهلها هو استخدام صنفية class TStringList . لكن التعامل معها يتطلب بعض الخطوات من إنشاء لكائن object من نوع هذه الصنفية، ثم استخدامه لتحميل الملف النصي، وأخيرا تحرير الذاكرة من الكائن وإفنائه. الكود التالي  يوضح ذلك في أبسط صورة، وبأقل ما يمكن من خطوات:</p>
+
+
+  <div class="div-code">
+    <pre>
+***
+ <span class="k">var</span>
+  st: TStringList;
+  FileName: string;
+  AText: string;
+ <span class="k">begin</span>
+  FileName :=  <span class="s">'Test.txt'</span>;
+  st := TStringList.Create;
+   <span class="k">try</span>
+    st.LoadFromFile(FileName, TEncoding.UTF8);
+    <span style="font-weight:600;">AText := st.Text;</span>
+   <span class="k">finally</span>
+    st.Free;
+   <span class="k">end</span>; 
+  ***
+  ***
+</pre>
+  </div>  
+<p>كما نرى خطوات كثيرة لمجرد الحصول على المحتوى النصي للملف.</p>
+<p>ما أرغب فيه هو تعليمة بسيطة تغنيني عما سبق مثل التالي:</p>
+
+  <div class="div-code">
+    <pre>
+<span class="k">var</span>
+  AText: string;
+<span class="k">begin</span>
+  AText := FileText(<span class="s">'Test.txt'</span>);
+  ***
+</pre>
+  </div>    
+<p>حيث يكفي استدعاء دالة واحدة مع إعطائها إسم الملف ، فتقوم الدالة بكل مايلزم وترد لي بالمقابل النص الذي بالملف في متغير.</p> 
+<p>قبل الشروع في صنع هذه الدالة؛ أحتاج لصنع دالة مساعدة تكون الأساس لصنع دالة FileText ودوال أخرى تقدّم لي محتوى النص بصيغ أخرى. الدالّة المساعدة إسمها FileStrings :</p>
+  
+  
+   <div class="div-code">
+    <pre>
+<span class="k">function</span> FileStrings(<span class="k">const</span> FileName: <span class="k">string</span>): TStrings;
+<span class="k">var</span>
+  sl: TStringList;
+<span class="k">begin</span>
+  result := <span class="k">nil</span>;
+  <span class="k">if not</span> FileExists(FileName) <span class="k">then</span> exit;
+
+  sl := TStringList.Create;
+  <span class="k">try</span.
+    sl.LoadFromFile(FileName, TEncoding.UTF8);
+    result := sl;
+  <span class="k">except</span>
+    sl.Free;
+    sl := <span class="k">nil</span>;
+  <span class="k">end</span>;
+<span class="k">end<span>;
+</pre>
+  </div>  
+  
+<p>الدالّة تستقبل إسم ملف المطلوب فتحه، وناتجها result هو كائن من نوع TStrings . بعد أن تقوم الدالة  بالتأكد من وجود الملف، تقوم بإنشاء كائن من نوع مشتق وهو TStringList ليقوم بفتح وتحميل الملف. إذا نجحت العملية يتم إسناد هذا الكائن إلى ناتج الدالّة، في حالة حدوث أي خطأ يتم إفناء الكائن وإعادة قيمته إلى لا شيئ nil.</p> 
+
+<p>(لاحظ إننا لم نقم بإفناء الكائن في حالة نجاح عملية فتح الملف، وتركنا مسؤولية هذا الأمر لمن يقوم بإستدعاء هذه الدالة). بعد هذا نشرع في بناء الدالة FileText كالتالي:</p>
+  
+   <div class="div-code">
+    <pre>
+<span class="k">function</span> FileText(<span class="k">const</span> FileName: <span class="k">string</span>): <span class="k">string</span>;
+<span class="k">var</span>
+  Strings: TStrings;
+<span class="k">begin</span>
+  result := '';
+  <span class="k">try</span>
+    Strings := FileStrings(FileName);
+    <span class="k">if</span> Strings <> <span class="k">nil then</span>
+      result := Strings.Text;
+  <span class="k">finally
+    if</span> Strings <> <span class="k">nil then</span>
+      Strings.Free;
+  <span class="k">end</span>;
+<span class="k">end<span>;
+</pre>
+  </div>   
+  
+<p>كما نرى؛ تقوم الدالة بتطبيق الدالة المساعدة FileStrings على إسم ملف، فتتحصّل على قائمة نصية من نوع TStrings بمحتويات الملف (قائمة بأسطر المحتوى النصّي للملف) ، ثم باستخدام خاصية Text يتم اسناد كامل المحتوى في متغير واحد result من نوع string الذي هو ناتج الدالة.</p>
+
+<p>(لاحظ كيف أن هذه الدالة مسؤولة عن إفناء الكائن Strings المتحصّل من دالة FileStrings)</p> 
+
+<p>بهذا تكون الدالة قد سهّلت علينا الحصول على محتويات ملف نصي ووضعه في متغير من نوع string</p> 
+  
+  <div class="div-code">
+    <pre>
+AText := FileText(<span class="s">'Test.txt'</span>);
+Memo1.Text := AText;
+</pre>
+  </div>  
+  
+<p>ماذا لو أردنا الحصول على محتوى نفس الملف في مصفوفة بحيث تنتظم أسطر نصّ الملف في عناصرها حيث كل عنصر في المصفوقة يمثل سطرا في النص؟</p> 
+
+<p>الدالة التالية ستقوم بالمطلوب وتعطي مصفوفة نصية بأسطر الملف:</p>
+  
+    <div class="div-code">
+    <pre>
+<span class="k">function</span> FileArray(<span class="k">const</span> FileName: <span class="k">string</span>): TStringArray; <span class="k">
+var</span>
+  Strings: TStrings;
+  i: integer;
+<span class="k">begin</span>
+  result := 0;
+  <span class="k">try</span>
+    Strings := FileStrings(FileName);
+    <span class="k">if</span> Strings <> <span class="k">nil then</span>
+    <span class="k">begin</span>
+      SetLength(result, Strings.Count);
+      <span class="k">for</span> i := 0 <span class="k">to</span> Strings.Count - 1 <span class="k">do</span>
+        result[i] := Strings[i];
+
+    <span class="k">end</span>;
+  <span class="k">finally
+    if</span> Strings <> <span class="k">nil then</span>
+      Strings.Free;
+  <span class="k">end</span>;
+<span class="k">end<span>;
+</pre>
+  </div>  
+  
+  
+<p>الدالة ترجع مصفوفة حيوية dynamic array من نوع TStringArray والذي نحتاج إلى تعريفه قبل استخدامه في بناء الدالة، لذلك يجب وضع التعريف في مكان يكون في منظور الدالة ومنظور من يستدعيها:</p> 
+    <div class="div-code">
+    <pre>
+<span class="k">type</span>
+  TStringArray = array of string;
+</pre>
+  </div>  
+<p>وكما في دالة FileText السابقة تقوم الدالة بالاستعانة ب FileStrings لتردّ لها قائمة نصية من نوع TStrings ، وبناء على عدد عناصر القائمة تحدد طول المصفوفة بنفس العدد، ثم تنسخ محتويات كل عنصر في القائمة إلى ما يقابلها من عناصر المصفوفة.</p> 
+<p>يمكن الآن استخدام هذه الدالة كما في المثال التالي:</p>
+  
+    <div class="div-code">
+    <pre>
+<span class="k">procedure</span> TForm1.Button1Click(Sender: TObject);
+<span class="k">var</span>
+  arrItems: TStringArray;
+  i: integer;
+<span class="k">begin</span>
+  arrItems := FileArray(‘sample.txt’);
+  Memo1.Clear;
+  <span class="k">for</span> i := 0 <span class="k">to</span> High(arrItems) <span class="k">do</span>
+    Memo1.Lines.Add(arrItems[i]);
+<span class="k">end</span>;
+</pre>
+  </div>   
+  
+<h2>وأخيرا</h2> 
+<p>تتعدد المهام البرمجية التي نستخدمها بشكل متكرر في برامجنا، هذه المهام قد يتم تنفيذها في تعليمة واحدة أو في مجموعة متعددة من التعليمات برمجية، تغليف هذه المهام وتعليماتها في تعليمة صغيرة موجزة تزيد من إنتاجيتنا وتحسّن مقروئية برامجنا.</p>
+
+<p>فيما سبق كان عرضا لما يمكن اختصاره أو إيجازه من مهام برمجية، وهناك العديد من المهام الأخرى التي تستحق العمل على إيجازها بالنسبة للمبرمج بحسب عاداته ومجال برمجته.</p> 
+
+<p>في ختام مقالتي أودّ الإشارة إلى تعليمة أخرى نسيت ذكرها، تعليمة مزعجة يكثر استخدامي لها؛ هي تعليمة UpperCase . كالعادة، اختصرتها في دالّة <span dir="ltr">_U</span> :</p>
+    <div class="div-code">
+    <pre>
+<span class="k">function</span> _U(<span class="k">const</span> s: <span class="k">string</span>): <span class="k">string</span>;
+<span class="k">begin</span>
+  result := AnsiUpperCase(s);
+<span class="k">end</span>;
+</pre>
+  </div>  
+
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  
+  <p>&nbsp;</p>
+<hr />
+<!--   -->
+
+  <p>&nbsp;</p>
+<div id="disqus_thread">
+      <script>
+          var disqus_config = function () {
+            this.page.title = "مغامرات في دلفي"
+            this.page.url = "http://shagrouni.github.io/adventures-in-delphi/index.html";
+            this.page.identifier = "/blog/adventures-in-delphi/index.html";
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            s.src = '//shagrouni.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+      </script>
+        <noscript>Please enable JavaScript to view the 
+        <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+          
+    
+          <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-74950849-1', 'auto');
+            ga('send', 'pageview');
+         </script>
+         <script id="dsq-count-scr" src="http://shagrouni.disqus.com/count.js" async></script>
+</div> <!-- Article -->
+
+</center>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+
+
+</body>
+</html>
