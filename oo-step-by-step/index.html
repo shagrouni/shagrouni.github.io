@@ -1,0 +1,807 @@
+﻿<!DOCTYPE html dir="rtl">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link href="../article.css" type="text/css" rel="stylesheet" />
+  
+    <title>البرمجة بالمنحى الكائني خطوة خطوة
+</title>
+
+    <meta name="keywords" content="دلفي, برمجة, windows forms, دروس بلية, كورس" />
+    <meta name="description" content="بعض الحيل البرمجية في لغة دلفي" />
+</head>
+<body>
+
+
+
+  <center>
+  <a href ="../index.html">
+  <img alt="" src="sky.jpg" /></a>
+  <div class="div-article">  
+<table style="width: 100%;">
+        <tr>
+            <td>
+<h1>البرمجة بالمنحى الكائني</br> خطوة خطوة (1)</h1>
+            <td align="left" >
+
+<span style="font-size: 28px; font-weight: bold;">خالد الشقروني&nbsp;&nbsp;&nbsp;</span>22 06 2016
+            </td>
+        </tr>
+    </table>
+
+<!--<img alt="" src="IHeartFsharp160.png" /> 
+<div align="left"><span style="font-weight: bold;">خالد الشقروني</span> 05 05 2016</div>
+-->
+<p>أنت تريد أن تتعرف على أساسيات البرمجة بالمنحى للكائن Object Oriented Programming</p>
+<p>أنت لديك بعض الخبرة بالبرمجة و تريد أن تتعرف على المنحى للكائن و تفهمه استنادا إلى خبرتك هذه وانطلاقا مما تعرفه من تقنيات برمجية.</p>
+<p>أن تريد أن تتلمس بيدك كيف تكون البرمجة بالمنحى للكائن ، و ليس مجرد تعريفات ومصطلحات غامضة وشروحات طويلة مملة.</p>
+<p>إذا، و بدون مقدمات ، وبدون تمهيد نظري، <b>دعنا نبدأ</b>:</p>
+
+<center><img alt="" src="oo.png" /></center>
+<h2>الجولة الأولى</h2>
+<p>ابدأ مشروعا جديدا في دلفي، ضع زرا Button على نموذج الشاشة ثم نقرة مزدوجة double click ، نحن أمام إجرائية مناولة حدث OnClick للزر. من هنا نضع خربشاتنا للتجريب و الاستكشاف .</p>
+
+<p>نعلم جميعا أنه يوجد في البرمجة مفهوم إسمه متغيرات Variables يمكن أن نحمل عليها قيم، مثل المتغير الذي سنعرفه الآن:</p>
+
+<div class="div-code">
+<pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+<span class="k">var</span>
+  FirstName: <span class="k">string</span>;
+<span class="k">begin</span>
+
+<span class="k">end</span>;
+</pre>
+</div>
+
+
+<p>
+قمنا بتعريف متغير إسمه FirstName من نوع string، (كلمة نوع تسمى في دلفي Type)، يمكنك الآن أن تسند أية قيمة نصية لهذا المتغير، كأن نقول مثلا: <span dir="ltr"> FirstName := 'Ahmad';</span></p>
+
+<div class="div-code">
+<pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+<span class="k">var</span>
+  FirstName: <span class="k">string</span>;
+<span class="k">begin</span>
+  FirstName := <span class="s">'Ahmad'</span>;
+<span class="k">end</span>;
+</pre>
+</div>
+
+<p>ويمكننا التأكد من ذلك بطبع القيمة التي يحملها أو يشير إليها هذا المتغير FirstName على سطح النموذج:</p>
+
+<div class="div-code"><pre>
+<span class="k">begin</span>
+  FirstName := <span class="s">'Ahmad'</span>;
+
+  Canvas.TextOut(10, 10, FirstName);
+<span class="k">end</span>;
+</pre></div>
+
+<p>نقوم أيضا بإضافة المزيد من المتغيرات:</p>
+
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+<span class="k">var</span>
+  FirstName: <span class="k">string</span>;
+  LastName: <span class="k">string</span>;
+  BirthDate: TDateTime;
+<span class="k">begin</span>
+  FirstName := <span class="s">'Ahmad'</span>;
+  LastName := <span class="s">'Hamza'</span>;
+  BirthDate := EncodeDate(1980, 3, 15);
+
+  Canvas.TextOut(10, 10, FirstName);
+  Canvas.TextOut(10, 30, LastName);
+  Canvas.TextOut(10, 50, DateToStr(BirthDate));
+<span class="k">end</span>;
+</pre></div>
+
+<p>كما هو واضح أعلاه  بالإضافة إلى FirstName وضعنا متغيرات جديدة: اللقب من نوع string وتاريخ الميلاد من نوع TDate ، ثم خصصنا قيما لهذه المتغيرات، المتغيرات الثلاث معا تمثل حالة فرد ، والقيم تعبر عن فرد بذاته إسمه أحمد حمزة.</p> 
+
+<p>ثم كتبنا على شاشة النموذج القيم التي تحملها هذه المتغيرات.</p>
+
+<p>البرنامج بعد التشغيل يكون شكله كالتالي:</p>
+
+<center><img alt="" src="1.png" /></center>
+
+<h2>الجولة الثانية</h2>
+<p>المتغيرات التي حددناها سابقا هي من أنواع معرفة مسبقا داخل دلفي مثل string و integer و TDate وكل نوع له خصائصه، فنوع string يحمل سلسلة من أحرف نصية، و integer يحمل قيمة بعدد صحيح، و نوع TDate يحمل قيمة من نوع تاريخ. وكل متغير نقوم بتحديده سيحمل قيمة توافق النوع الذي انبثق من المتغير. هذا كلام معروف ومفهوم و من أساسيات البرمجة.</p>
+
+<p>الآن سوف ندفع بهذه المتغيرات إلى مستوى أعلى. ونستخدم نوعا جديدا من أنواع البيانات.</p>
+
+<p>المتغيرات التي عرفناها سابقا؛ سنقوم بضمها في هيكل واحد. هذه الهيكلية تسمى في دلفي record ، كالتالي:</p>
+
+
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+
+<span class="k">type</span>
+  TPerson = <span class="k">record</span>
+    FirstName: <span class="k">string</span>;
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;
+  <span class="k">end</span>;
+
+<span class="k">var</span>
+  Person: TPerson;
+<span class="k">begin</span>
+</pre></div>
+
+<p>في دلفي ، ومثل أية لغة أخرى تقريبا، يمكننا أن ننشئ أنواعا أخرى خاصة بنا، وهذا ما صنعناه أعلاه حيث قمنا بضم المتغيرات السابقة في هيكل واحد، ليعطينا نوعا جديدا أسميناه TPerson ، هذا النوع الجديد هو نوع مركب، أي أنه نوع يتكون من مجموعة أنواع أخرى.</p> 
+
+<p>كل تعريف داخل الهيكلية record يسمى حقلا Field ، فما كان متغيرات سابقا، أصبحت داخل الهيكلية حقولا لنوع TPerson .</p>
+
+<p>ثم قمنا بإنشاء متغير جديد Person من نوع TPerson. أي أنه بإستطاعته تمثيل وحمل البيانات التي يتكون منها النوع TPerson.</p>
+
+<p>والآن و بإستخدام المتغير Person يمكننا وضع القيم فيه كالتالي:</p>
+
+<div class="div-code"><pre>
+<span class="k">var</span>
+  Person: TPerson;
+<span class="k">begin</span>
+  Person.FirstName := <span class="s">'Ahmad'</span>;
+  Person.LastName := <span class="s">'Hamza'</span>;
+  Person.BirthDate := EncodeDate(1980, 3, 15);
+</pre></div>
+
+<p>إذا، بدلا من وضع بيانات الفرد في ثلاث متغيرات متفرقة، أصبح لدينا متغيرا واحدا يحمل هذه البيانات. وهو Person ، وللوصول لكل حقل في هذا المتغير؛ نكتب اسم المتغير ثم نقطة ثم إسم الحقل: Person.FirstName تماما مثل استخدامنا للخصائص في المكونات.</p> 
+<p>طريقة عرض قيم هذا المتغير ستكون بالطريقة التالية:</p>
+
+<div class="div-code"><pre>
+  Canvas.TextOut(10, 10, Person.FirstName);
+  Canvas.TextOut(10, 30, Person.LastName);
+  Canvas.TextOut(10, 50, DateToStr(Person.BirthDate));
+<span class="k">end</span>;
+</pre></div>
+<p>حتى تكون الصورة واضحة نعيد سرد الإجرائية بالكامل:</p>
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+<span class="k">type</span>
+  TPerson = <span class="k">record</span>
+    FirstName: <span class="k">string</span>;
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;
+  <span class="k">end</span>;
+<span class="k">var</span>
+  Person: TPerson;
+<span class="k">begin</span>
+  Person.FirstName := <span class="s">'Ahmad'</span>;
+  Person.LastName := <span class="s">'Hamza'</span>;
+  Person.BirthDate := EncodeDate(1980, 3, 15);
+
+  Canvas.TextOut(10, 10, Person.FirstName);
+  Canvas.TextOut(10, 30, Person.LastName);
+  Canvas.TextOut(10, 50, DateToStr(Person.BirthDate));
+<span class="k">end</span>;
+</pre></div>
+  
+<h3>ملاحظات سريعة:</h3>
+<p>لاحظ أن الإسم الذي أعطيناه للنوع TPerson  يبدأ بحرف T وذلك للدلالة على أنه Type وهذا عرف متبع في لغة دلفي.</p>
+
+<p>لاحظ أيضا أننا قبل تعريفنا لهذا النوع وضعنا التعليمة type ، وهذ أمر تتطلبه دلفي كلما أردنا إنشاء أنواعا خاصة. (حقيقة لا أعلم ما الحكمة من هذا)</p>
+
+<h3>ما قبل الجولة الثالثة</h3>
+<p>قبل أن ننتقل للجولة الثالثة أقترح القيام ببعض الإجراءات التنظيمية حتى لا تزدحم لدينا الأمور.</p>
+<h3>أولا:</h3>
+<p>تعريف TPerson بدلا من أن يكون محصورا  في إجرائية Button1Click وخاص بها؛ نقوم بنقله  إلى ملف وحدة جديدة، نسميها uOO ، حتى تتعرف عليه بقية الإجرائيات، ولفوائد أخرى سوف تتكشف لنا. وذلك كالتالي:</p>
+  
+<div class="div-code"><pre>
+<span class="k">unit</span> uOO;
+
+<span class="k">interface</span>
+<span class="k">uses</span>
+  SysUtils;
+
+<span class="k">type</span>
+  TPerson = <span class="k">record</span>
+    FirstName: <span class="k">string</span>;
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;
+  <span class="k">end</span>;
+
+<span class="k">implementation</span>
+
+<span class="k">end</span>.
+</pre></div>  
+ 
+<p>كما هو واضح في السرد أعلاه، إسم الوحدة uOO ، قمنا بوضع تعريف النوع TPerson قبل قسم implementation ، كما قمنا بوضع التعليمة type قبل تعريف النوع للدلالة على أن ما يلي هذه التعليمة هي تعريفات لأنواع.</p>
+<p>أيضا، نقوم بوضع إسم الوحدة uOO ضمن قائمة الاستخدام uses في وحدة نموذج الشاشة، كالتالي:</p>
+<div class="div-code"><pre>
+<span class="k">uses</span>
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls,
+  Forms,Dialogs, StdCtrls,
+  uOO;
+</pre></div>
+
+<p>الآن أصبح شكل مقدمة الإجرائية Button1Click كالتالي:</p>
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+<span class="k">var</span>
+  Person: TPerson;
+<span class="k">begin</span>
+</pre></div>
+<h3>ثانيا:</h3>
+<p>ننقل التعليمات الخاصة بعرض البيانات ووضعها في إجرائية خاصة منفصلة. نقوم بتعريف الإجرائية تحت قسم private كالتالي:</p>
+
+<div class="div-code"><pre>
+  <span class="k">private</span>
+    <span class="k">procedure</span> ShowPerson(P: TPerson);
+</pre></div>
+<p>ثم جسم الإجرائية:</p>
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.ShowPerson(P: TPerson);
+<span class="k">begin</span>
+  Canvas.TextOut(10, 10, P.FirstName);
+  Canvas.TextOut(10, 30, P.LastName);
+  Canvas.TextOut(10, 50, DateToStr(P.BirthDate));
+<span class="k">end</span>;
+</pre></div>
+
+<p>أي أن إجرائية العرض ShowPerson تستقبل محدد parameter إسمه P من نوع TPerson .</p>
+<p>وتعليمة الإستدعاء لها كالتالي داخل Button1Click:</p>
+<div class="div-code"><pre>
+  ShowPerson(Person);
+<span class="k">end</span>;
+</pre></div>
+
+<p>وأصبح شكل إجرائية Button1Click كالتالي:</p>
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+<span class="k">var</span>
+  Person: TPerson;
+<span class="k">begin</span>
+  Person.FirstName := <span class="s">'Ahmad'</span>;
+  Person.LastName := <span class="s">'Hamza'</span>;
+  Person.BirthDate := EncodeDate(1980, 3, 15);
+
+  ShowPerson(Person);
+<span class="k">end</span>;
+</pre></div>
+
+<p>هل الأمور واضحة إلى حد الآن.</p>
+<p>إذا لم تكن كذلك، فقد يعني هذا أنك لست معتادا على إستخدام أنواع البيانات المركبة، لذلك وقبل الدخول للجولة الثالثة، أقترح إعادة مراجعة الجولة الثانية وإستخدام أمثلة من عندك لإنشاء أنواعا أخرى باستخدام هيكلية record واستخدامها بأكثر من طريقة حتى تتمكن منها.</p>   
+
+<h2>الجولة الثالثة</h2>
+<p>هذه هي الجولة المنتظرة.. سندخل الآن عالم المنحى للكائن ..</p>
+<p>في الجولة الأولى عبرنا عن بيانات الفرد من خلال ثلاث متغيرات بأنواع بيانات مختلفة:</p>
+
+<div class="div-code"><pre>
+<span class="k">var</span>
+  FirstName: <span class="k">string</span>;
+  LastName: <span class="k">string</span>;
+  BirthDate: TDateTime;
+</pre></div>
+<p>وفي الجولة الثانية عبرنا عن بيانات الفرد بنوع بيانات جديد TPerson ببنية record :</p>
+
+<div class="div-code"><pre>
+<span class="k">type</span>
+  
+  TPerson = <span class="k">record</span>
+    FirstName: <span class="k">string</span>;
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;
+  <span class="k">end</span>;
+</pre></div>
+
+<p>في هذه الجولة، سنطور نوع TPerson  أعلاه من بنية record إلى صنفية Class. هل قلت Class نعم Class أي أننا الآن سنتحدث بالمنحى الكائني.</p>
+<p>كيف نحول بنية record  إلى صنفية. التغيير بسيط كالتالي:</p>
+
+<div class="div-code"><pre>
+<span class="k">type</span>
+
+  TPerson = class(TObject)
+     FirstName: <span class="k">string</span>;
+     LastName: <span class="k">string</span>;
+     BirthDate: TDateTime;
+ <span class="k">end</span>;
+</pre></div>
+
+<p>بدلا من تعريف TPerson  على أنه بنية record ؛ عرفناه على أنه صنفية class</p> 
+
+<p>الآن أصبح لدينا Class. صحيح شكلها بدائي، و لكنها صنفية مكتملة، إنها صنفية بإسم TPerson ومشتقة من صنفية أخرى إسمها TObject التي تعد أصل جميع الصنفيات في دلفي.</p>
+
+<p>في دلفي كل صنفية Class لابد أن تكون مشتقة من صنفية أخرى،  وقد اخترنا TObject لتكون أساس الاشتقاق لصنفيتنا TPerson.</p>
+
+<p>الآن سوف نرى كيفية استخدام هذه الصنفية.</p>
+
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.Button1Click(<span class="k">Sender</span>: TObject);
+<span class="k">var</span>
+  Person: TPerson;
+<span class="k">begin</span>
+
+  <span style="font-weight: bold;">Person := TPerson.Create;</span>
+
+  Person.FirstName := <span class="s">'Ahmad'</span>;
+  Person.LastName := <span class="s">'Hamza'</span>;
+  Person.BirthDate := EncodeDate(1980, 3, 15);
+  
+  ShowPerson(Person);
+
+  <span style="font-weight: bold;">Person.Free;</span>
+<span class="k">end</span>;
+</pre></div>
+
+<p>لقد قمنا أولا ببث الروح في المتغير Person بخلق الكائن الذي سيمثله من خلال المنهاج Create ، وقد عبرنا عنه بالأمر:  Person := TPerson.Create .</p>
+
+<p>المتغير Person قبل استخدامه هو مجرد جسم ميت مشكل بحسب القالب TPerson و عندما يتم إنشائه أو إحيائه بأمر Create يصير كائنا Object حيا في الذاكرة، وجاهزا للإستخدام.</p> 
+
+<p>عند الإنتهاء من استخدامه، و انتفاء الحاجة إليه، يجيب علينا أن ننهيه و نميته من خلال المنهاج Free، كالتالي: Person.Free</p>
+
+<h3>إضافة العمليات على الصنفية</h3>
+
+<p>الصنفية كما عرفناها حتى الآن تحوي بيانات فقط. والتي تعبر عنها الحقول التي داخل الصنفية مثل FirstName، الآن ماذا لو احتوت الصنفية على عمليات Operation أو بمصطلح آخر إجرائيات. لنجرب.</p>
+
+<p>داخل الصنفية و بعد تعريف الحقول نقوم بتعريف الإجرائية أو الدالة GetFullName كالتالي:</p>
+
+<div class="div-code"><pre>
+  TPerson = class(TObject)
+    FirstName: <span class="k">string</span>;
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;
+    <span class="k">function</span> GetFullName: <span class="k">string</span>;
+  <span class="k">end</span>;
+</pre></div>
+
+<p>بعد كتابة تعريف الإجرائية بالكامل، تأكد من أن مؤشر الكتابة على سطر هذا التعريف وباستخدام لوحة المفاتيح قم بإصدار الأمر Ctrl + Shift + C . سوف تقوم دلفي ببناء جسم هذه الأجرائية. ثم نضع فيها الكود اللازم لإعطائنا إسم الفرد بالكامل.</p>
+<p>جسم الإجرائية أو ال function سيكون كالتالي:</p>
+
+<div class="div-code"><pre>
+<span class="c">{ TPerson }</span>
+
+<span class="k">function</span> TPerson.GetFullName: <span class="k">string</span>;
+<span class="k">begin</span>
+  result := FirstName + <span class="s">' '</span> + LastName;
+<span class="k">end</span>;
+</pre></div>
+
+<p>نقوم بتعديل إجرائية العرض لدينا كي نستفيد من الدالة الجديدة.</p>
+
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.ShowPerson(P: TPerson);
+<span class="k">begin</span>
+  Canvas.TextOut(10, 10, P.FirstName);
+  Canvas.TextOut(10, 30, P.LastName);
+  Canvas.TextOut(10, 50, DateToStr(P.BirthDate));
+
+  Canvas.TextOut(10, 80, P.GetFullName);
+<span class="k">end</span>;
+</pre></div>
+
+<h3>ماذا لدينا الآن</h3>
+<p>لدينا الآن صنفية class إسمها TPerson ، هذه الصنفية تحوي حقول لبيانات، كما تحوي على عمليات (بالأحرى عملية واحدة). العملية ممثلة في الدالة التي إسمها GetFullName . لاحظ إن جسم الدالة خارج جسم الصنفية ولكنها تتبعها، و الدليل على ذلك إن إسم الدالة يكون مسبوقا بإسم الصنفية كالتالي:</p>
+
+<div class="div-code"><pre>
+<span class="k">function</span> TPerson.GetFullName: <span class="k">string</span>;
+</pre></div>
+
+<p>الصنفية بوضعها الحالي تعتبر صندوقا مغلقا. لماذا، لأن حقول الصنفية و بياناتها، و كذلك إجرائياتها لايمكن الوصول إليها إلا من خلال كائن ينبعث منها. أي أننا لا نستطيع أن تستخدم حقولها أو نستدعي إجرائياتها مباشرة؛ بل يجب أولا أن نقوم بتعريف متغير من نفس نوع الصنفية، ثم نقوم بخلق هذا المتغير من خلال الأمر Create ليصبح كائنا object ، عندها فقط وعبر هذا الكائن نستطيع تلمس حقول الصنفية واستدعاء اجرائياتها.</p> 
+
+
+<h3>وقفة تأملية</h3>
+
+<p>ماهي الصنفية Class و ماهو الكائن Object وما العلاقة بينهما.</p>
+
+<p>الصنفية class يمكن اعتبارها قالب، هذا القالب مشكل بحيث يحوي العناصر الي صممت له مثل البيانات (المتغيرات و الخصائص) والعمليات (مثل الإجرائيات و الدوال و المنهاجيات).</p> 
+
+<p>المتغير من نوع الصنفية هو جسم مستخرج من هذا القالب بعد صبه فيه. بحيث يكون شكله شكل القالب، ولكنه جسم ميت لا حياة فيه. مثل المتغير Person قبل خلقه.</p>
+
+<p>الكائن Object هو الجسم السابق المستخرج من القالب لكن بعد بث الحياة فيه وخلقه من خلال Create.</p>
+
+<h3>خواطر وتساؤلات</h3>
+
+<ul>
+<li>
+<b>من أين أتت أوامر مثل Create و Free ؟ فهي ليست موجودة في صنفية TPerson؟</b></br>
+
+Create و Free هي مناهج Methods تابعة للصنفية TObject، ولأن صنفية TPerson  مشتقة منها؛ فهي بالوراثة تملك كل ما تملكه صنفية TObject. 
+المنهاج Create يسمى Constructor أي المشيد أو الباني الذي يقوم ببناء وتجسيد الكائن. والمنهاج Free يسمى Destructor أي الهادم أو المدمر. (في الواقع المنهاج Free هو مجرد إجرائية تقوم باستدعاء الهادم الحقيقي وهو Destroy ويمكننا استدعائه مباشرة).
+</br></br>
+</li>
+
+<li>
+<b>هل يمكن اعتبار الحقل FirstName خاصية property وهل يمكن اعتبار الدالة GetFullName منهاجا Method ؟</b></br>
+
+الحقل FirstName الآن مجرد متغير داخل الصنفية، يمكن اعتباره شبه خاصية. اما الدالة فنعم هي منهاج أو method.
+</br></br>
+</li>
+
+<li>
+<b>ماذا يحدث لو لم ننه الكائن ونتلفه؟</b></br>
+
+سيبقى عالقا في الذاكرة محتلا لجزء منها حتى بعد إنتهاء تشغيل برنامجنا. وإذا تكرر خلق كائنات أخرى دون إتلافها، فكل عملية خلق وتجسد لكائن سيحتل حيزا إضافيا في الذاكرة، فتزداد بذلك حجم الذاكرة المستنزفة، والذي يسمى memory leakage أي تسرب في الذاكرة.</br></br>
+(في لغات أخرى مثل <span dir="ltr">C#</span> و جافا توجد تقنية إسمها Garbage Collection جمع القمامة تقوم نيابة عن المبرمج بكنس وإتلاف ما علق في الذاكرة من كائنات غير مستخدمة)</br></br>
+</li>
+
+<li>
+<b>هل يمكن إنشاء أكثر من كائن لنفس الصنفية في نفس الوقت؟</b></br>
+
+نعم، يمكن أن يكون لدينا الكائن Person1 و Person2 وهكذا في نفس الوقت، وكل كائن منهم لديه صفاته الخاصة، هذا أحمد ، و ذاك علي. كل كائن يتم استحضاره يسمى أيضا instance أي حضور أو تجسد أو تمثل للصنفية التي يمثلها.</br></br>
+
+</li>
+</ul>
+
+<h3>ماذا أيضا</h3>
+<p>إذا فهمت ما تم طرحه في هذه الجولة، أو إذا أصابتك ربكة أو دوخة بسيطة، أو إذا أحسست انك فهمت ولكن جزء من عقلك لايريد أن يفهم ولا يريد أن يرى الأمور بهذا المنظار الجديد؛ فتهانينا .. أنت على المسار الصحيح !!</p>
+
+<p>الآن أقترح أن نتمرن قليلا على استخدام الصنفية، قم بإنشاء متغيرات أخرى من نفس نوع الصنفية TPerson، وسمّها مثلا: Person1 و Person2 ، أضف حقول أخرى على الصنفية،  أضف إجرائيات ودوال أخرى، وحاول استدعائها. قم أيضا بإنشاء صنفيات أخرى، و طبق عليها اختباراتك.</p> 
+
+<p>نحن الآن كشفنا جزءا بسيطا من الغطاء حول مفاهيم المنحى للكائن. مفاهيم المنحى للكائن عميقة ومتشعبة، و يستحسن أن يتم الخوض فيها برفق وهدوء، فلا يتم التعمق فيها إلا بعد استيعاب ما تم فهمه وممارسته لأكثر من مرة.</p> 
+ 
+<p>في الجولة القادمة سوف نطور من الصنفية TPerson ليصبح لديها خصائص properties ومنهاجيات methods منظمة بطريقة أكثر احترافية.</p>
+
+<h2>الجولة الرابعة</h2>
+<p>في هذه الجولة سنغوص أكثر في مفاهيم المنحى للكائن، ونرقى بالصنفية TPerson إلى مستويات أعلى.</p>
+<h3>المنظورية</h3>
+<p>ننظر الآن إلى موضوع المنظورية visibility أو مجال الرؤية scope بالنسبة لعناصر الصنفية. أي ماهي العناصر داخل الصنفية التي يمكن للعالم الخارجي أن يراها و ينفذ إليها، و تلك التي تكون محجوبة عنه.</p>
+
+<p>ماذا لو أضفنا داخل الصنفية كلمة private قبل المتغيرات مثل التالي:</p>
+
+<div class="div-code"><pre>  TPerson = class(TObject)
+  <span class="k" style="color:navy;">private</span>
+    FirstName: <span class="k">string</span>;
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;
+    <span class="k">function</span> GetFullName: <span class="k">string</span>;
+  <span class="k">end</span>;
+</pre></div>
+
+<p>ثم نجرب برنامجنا. سنلاحظ أن دلفي أعطتنا رسالة خطأ عند التعليمة Person.FirstName ، لماذا؟ لأن الكائن Person بعد هذا التغيير لا يستطيع أن يرى الخصائص والإجرائيات التي تم وسمها بكلمة private في الصنفية.</p>
+
+<p>الوسم private تعني خاص أي خاص بالصنفية فقط، و بالتالي فإن أية تعريفات يتم سردها تحت قسم private لايمكن النفاذ إليها إلا فقط من قبل الاجرائيات التابعة للصنفية ذاتها.</p>
+
+<p>نفس الأمر لو استخدمنا الوسم protected ومعناها محمي، التعريفات تحت هذا الوسم لايمكن النفاذ إليها أو رؤيتها إلا من قبل الصنفية ذاتها أو صنفية أخرى مشتقة منها (سنناقش الاشتقاق لاحقا).</p>
+
+<div class="div-code"><pre>  TPerson = class(TObject)
+  <span class="k" style="color:navy;">protected</span>
+    FirstName: <span class="k">string</span>;
+    ---------
+</pre></div>
+
+<p>أما إذا وضعنا الوسم public وتعني عمومي أو عام، فإن كل ما هو تحت هذا القسم يكون مرئيا ومتاحا للعالم خارج الصنفية.</p>
+
+<div class="div-code"><pre>  TPerson = class(TObject)
+  <span class="k" style="color:navy;">public</span>
+    FirstName: <span class="k">string</span>;
+    ------
+</pre></div>
+<p>وإذا لم نقم بتحديد منظورية عناصر الصنفية، فإن دلفي افتراضيا تجعلها عمومية ومتاحة.</p>
+
+<h3>الخصائص</h3>
+<p>سنقوم الآن بتحويل المتغيرات في الصنفية إلى خصائص properties. و لكن قبل أن تقوم بذلك، أقترح أن يتم إعادة ترتيب الصنفية وفق التالي:</p>
+
+<div class="div-code"><pre>  TPerson = class(TObject)
+  <span class="k">private</span>
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;
+  <span class="k">public</span>
+    FirstName: <span class="k">string</span>;
+    <span class="k">function</span> GetFullName: <span class="k">string</span>;
+  <span class="k">end</span>;
+</pre></div>
+
+<p>أي نجعل جميع المتغيرات بالصنفية تحت قسم private ما عدا المتغير FirstName يكون تحت قسم public.</p>
+<p>أقترح أيضا أن يتم حفظ الملف uOOP للإحتياط.</p> 
+<p>نبدأ بتحويل المتغير FirstName إلى خاصية، وذلك بكتابة التعريف property قبلها كالتالي:</p>
+<div class="div-code"><pre>  <span class="k">public</span>
+    <span class="k">property</span> FirstName: <span class="k">string</span>;
+</pre></div>
+<p>الآن، نضع مؤشر الكتابة على سطر تعريف هذه الخاصية و نعطي الأمر Ctrl+Shift+C وسيقوم محرر دلفي آليا بتكملة التعريف وتوليد الكود اللازم. شكل الصنفية سيكون كالتالي:</p>
+
+<div class="div-code"><pre>  TPerson = class(TObject)
+  <span class="k">private</span>
+    LastName: <span class="k">string</span>;
+    BirthDate: TDateTime;</span>
+    <span style="background: #9CDCFE;line-height: normal;">FFirstName: <span class="k">string</span>;</span>
+    <span style="background: #9CDCFE;line-height: normal;"><span class="k">procedure</span> SetFirstName(<span class="k">const</span> Value: <span class="k">string</span>);</span>
+  <span class="k">public</span></span>
+    <span style="background: #9CDCFE;line-height: normal;"><span class="k">property</span> FirstName: <span class="k">string</span> read FFirstName write SetFirstName;</span>
+    <span class="k">function</span> GetFullName: <span class="k">string</span>;
+  <span class="k">end</span>;</pre></div>
+
+<div class="div-code"><pre>
+<span class="k">procedure</span> TPerson.SetFirstName(<span class="k">const</span> Value: <span class="k">string</span>);
+<span class="k">begin</span>
+  FFirstName := Value;
+<span class="k">end</span>;</pre></div>
+
+<p>لقد قام المحرر بتوليد تعليمات إضافية آليا والتي تمثلت في الآتي:</p>
+
+<ul>
+<li>
+إضافة متغيرا جديدا أسماه FFirstName أي بنفس اسم الخاصية مسبوقا بحرف F وجعل نوعها من نفس نوع الخاصية أي string.</li>
+<li>إضافة إجرائية بنفس إسم الخاصية مسبوقة بكلمة Set وهي SetFirstName مع محدد parameter بنفس نوع الخاصية.</li>
+<li>إضافة جسم الإجرائية SetFirstName والتي يتم فيها تخصيص القيمة الممررة لها للمتغير FFirstName .</li>
+<li>في سطر تعريف الخاصية قام بتحديد مصدر قراءة قيمة الخاصية read ومصدر تحديد قيمة الخاصية write. وفي حالتنا هذه فإن قيمة الخاصية يستمدها من المتغير FFirstName ، كما أنها تحدد بواسطة الإجرائية SetFirstName  .</li>
+</ul>
+
+<p>إذا وجدت كلامي السابق غامضا أو مبهما ، فلا تقلق، وسيتم توضيحه أكثر بمزيد من الأمثلة.</p>
+
+<p>يمكن الآن تكرار العملية السابقة مع باقي المتغيرات، ننقل تعريف المتغيرات LastName و BirthDate إلى قسم public ، ثم نضع مؤشر الكثابة على سطر إحدى الخصائص وتنفيذ الأمر Ctrl+Shift+C ليقوم المحرر بتوليد التعليمات المتعلقة بهذه الخصائص.</p> 
+
+<p>شكل الصنفية سيكون كالتالي:</p>
+
+<div class="div-code"><pre>  TPerson = <span class="k">class</span>(TObject)
+  <span class="k">private</span>
+    FFirstName: <span class="k">string</span>;
+    FLastName: <span class="k">string</span>;
+    FBirthDate: TDateTime;
+
+    <span class="k">procedure</span> SetBirthDate(<span class="k">const</span> Value: TDateTime);
+    <span class="k">procedure</span> SetFirstName(<span class="k">const</span> Value: <span class="k">string</span>);
+    <span class="k">procedure</span> SetLastName(<span class="k">const</span> Value: <span class="k">string</span>);
+  <span class="k">public</span>
+    <span class="k">property</span> FirstName: <span class="k">string</span> <span class="k">read</span> FFirstName <span class="k">write</span> SetFirstName;
+    <span class="k">property</span> LastName: <span class="k">string</span> <span class="k">read</span> FLastName <span class="k">write</span> SetLastName;
+    <span class="k">property</span> BirthDate: TDateTime <span class="k">read</span> FBirthDate <span class="k">write</span> SetBirthDate;
+    
+    <span class="k">function</span> GetFullName: <span class="k">string</span>;
+  <span class="k">end</span>;
+</pre></div>
+  
+<p>وهذه مجموعة ال Setters التابعة لهذه الخصائص:</p>  
+  
+<div class="div-code"><pre>
+<span class="k">procedure</span> TPerson.SetFirstName(<span class="k">const</span> Value: <span class="k">string</span>);
+<span class="k">begin</span>
+  FFirstName := Value;
+<span class="k">end</span>;
+
+<span class="k">procedure</span> TPerson.SetLastName(<span class="k">const</span> Value: <span class="k">string</span>);
+<span class="k">begin</span>
+  FLastName := Value;
+<span class="k">end</span>;
+
+<span class="k">procedure</span> TPerson.SetBirthDate(<span class="k">const</span> Value: TDateTime);
+<span class="k">begin</span>
+  FBirthDate := Value;
+<span class="k">end</span>;
+</pre></div>  
+
+<p>نقوم بتجربة البرامج ، وأرجو أن تكون الأمور على مايرام.<p/>
+<h3>إضافة خاصية جديدة</h3>
+<p>الآن نقوم بتحديد خاصية جديدة. الخاصية ستكون بإسم Age أي العمر، وغرضنا منها أن تخبرنا بعمر الفرد من واقع معلومة تاريخ الميلاد. نريد أيضا من الخاصية أن تكون للقراءة فقط، أي أنها تعطي عمر الفرد فقط ولا تقبل أن يتم تحديد قيمة هذا العمر من خارج الصنفية.</p>
+
+<div class="div-code"><pre>  <span class="k">public</span>
+    ......... 
+    .........
+    <span class="k">property</span> Age: integer <span class="k">read</span> GetAge;
+</pre></div>
+
+<p>لاحظ أنه في تعريف الخاصية حددنا read فقط و لم نحدد write .</p> 
+<p>إذن حساب العمر سيكون من الدالة التي أسميناها GetAge كما هو واضح أعلاه. يمكننا تعريف هذه الدالة وبناء جسمها يدويا، أو نترك محرر دلفي يقوم بهذه العملية.</p>
+<p>تعريف الدالة GetAge سيكون تحت قسم private كالتالي:</p>
+
+<div class="div-code"><pre>  <span class="k">private</span>
+    ......... 
+    .........
+    <span class="k">function</span> GetAge: integer;
+</pre></div>
+<p>أما جسم الدالة GetAge سيكون كالتالي:</p>
+<div class="div-code"><pre>
+<span class="k">function</span> TPerson.GetAge: integer;
+<span class="k">begin</span>
+  result := Round(YearSpan(Now, BirthDate));
+<span class="k">end</span>;
+</pre></div>
+<p>الدالة تقوم بإعطاء العمر بصورة تقريبية، باستخدام الدالة YearSpan . (يجب إضافة DateUtils إلى قسم uses).</p> 
+<p>لاحظ أن الدالة GetAge معرفة في قسم private وبالتالي فإنها لن تكون مرئية للعالم الخارجي.</p>
+<p>الآن لنستخدم هذه الخاصية الجديدة في شاشة العرض لدينا.<p>
+
+<div class="div-code"><pre>
+<span class="k">procedure</span> TForm1.ShowPerson(P: TPerson);
+<span class="k">begin</span>
+  Canvas.TextOut(10, 10, P.FirstName);
+  Canvas.TextOut(10, 30, P.LastName);
+  Canvas.TextOut(10, 50, DateToStr(P.BirthDate));
+
+  Canvas.TextOut(10, 80, P.GetFullName);
+  <span style="background: #9CDCFE;line-height: normal;">Canvas.TextOut(10, 100, IntToStr(P.Age));</span>
+<span class="k">end</span>;
+</pre></div>
+
+<p>لنرى الآن شكل شاشة برنامجنا</p>
+<center><img alt="" src="2.png" /></center>
+
+<h3>المزيد من التوضيح</h3>
+<p>عندما كانت FirstName مجرد متغير في الصنفية، يمكن لأي مستخدم للصنفية أن يقرأ قيمتها أو يكتب لها قيمة جديدة دون قيود. فيقول Caption := Person.FirstName أو يقول <span dir="ltr">Person.FirstName := 'Ali'.</span></p>
+<p>بعدما حولنا هذا المتغير إلى خاصية property، أصبح لدينا القدرة لأن نحدد قيودا تحكم عمليات القراءة والكتابة لهذه الخاصية. كيف ذلك؟ الخاصية تعطينا الخيارات التالية للتحكم:</p>
+<p>أي مستخدم للصنفية عندما يريد معرفة قيمة الخاصية أي قرائتها فإن الصنفية تعطيه القيمة حسب التالي:</p>
+
+<div class="div-code"><pre>
+<span class="k">property</span> FirstName: <span class="k">string</span> <span class="k">read</span> FFirstName;
+
+<span dir="rtl">الخاصية تعطيه القيمة الموجودة في المتغير FFirstName.</span>
+</pre></div>
+<div class="div-code"><pre>
+<span class="k">property</span> FirstName: <span class="k">string</span> <span class="k">read</span> GetFirstName;
+
+<span dir="rtl">الخاصية تعطيه القيمة الناتجة عن دالة إسمها GetFirsName 
+(لم نحددها في مثالنا السابق، ولكن في الخاصية Age حددنا دالة تعطي القيمة)</span> 
+</pre></div>
+
+<p>أي مستخدم للصنفية عندما يريد أن يحدد قيمة الخاصية أي كتابتها فإن الصنفية تسمح بذلك حسب التالي:</p>
+<div class="div-code"><pre>
+<span class="k">property</span> FirstName: <span class="k">string</span> <span class="k">read</span> FFirstName <span class="k">write</span> FFirstName;
+
+<span dir="rtl">الخاصية تأخذ القيمة وتضعها مباشرة في المتغير FFirstName</span> 
+</pre></div>
+
+<div class="div-code"><pre>property FirstName: <span class="k">string</span> <span class="k">read</span> FFirstName <span class="k">write</span> SetFirstName;
+
+<span dir="rtl">الخاصية تأخذ القيمة وتمررها أولا إلى الإجرائية SetFirstName 
+التي ستقرر ماذا ستفعل بها.</span>
+</pre></div>
+
+<div class="div-code"><pre>
+<span class="k">property</span> FirstName: <span class="k">string</span> <span class="k">read</span> FFirstName;
+
+<span dir="rtl">الخاصية لا تقبل أية قيمة لها، أي أنها للقراءة فقط read only ترفض أية قيمة تعطى لها.</span>
+</pre></div>
+
+<div class="div-code"><pre>
+<span class="k">property</span> FirstName: <span class="k">string</span> <span class="k">read</span> GetFirstName <span class="k">write</span> SetFirstName;
+
+<span dir="rtl">عند القراءة تعطي ناتج الدالة GetFirstName 
+وعند الكتابة تأخذ القيمة وتمررها إلى الإجرائية SetFirstName.</span>
+</pre></div>
+
+<p>إذن هذه هي خيارات تحديد عمليات القراءة و الكتابة للخاصية، أي كيفية قراءة قيمة الخاصية وكيفية تحديدها. عمليات القراءة و الكتابة للخاصية تسمى Getters و Setters .</p>
+
+<p>عندما نطلب من محرر دلفي إكمال بناء كود الخاصية بواسطة الأمر Ctrl+Shift+C يقوم بتوصيف ال Getter على أنه متغير من نفس نوع الخاصية مثل FFirstName، ويقوم بتوصيف ال Setter على أنه إجرائية بمحدد من نفس النوع مثل SetFirsName. هذه هي الوضعية السائدة في أغلب الأحيان، إذا أردت وضعية أخرى يمكنك تغيير ذلك.</p>
+
+<p>في ال Setter مثل إجرائية SetFirstName نرى أن الإجرائية توجد بها تعليمة واحدة و هي :</p> 
+
+<p>FFirstName := Value و هي التعليمة الوحيدة التي يضعها محرر دلفي، و التي تحتاجها الخاصية لمعرفة قيمتها.</p>
+
+<h3>ملاحظة</h3>
+
+<p>هل لاحظتم أخوتي أن المتغيرات التابعة للخصائص مثل FFirsName و FLastName تبدأ بحرف F ؟ طبعا نستطيع أن نسمي هذا المتغيرات بالطريقة التي نريدها، ولكن وكعرف عام أيضا في دلفي؛ تكون هذه المتغيرات مسبوقة بحرف F للدلالة على أنها Field أي حقل داخل الصنفية.</p>
+
+<h3>شيء في الحلق</h3>
+
+<p>يوجد شيء في حلقي يزعجني منذ بدئنا للجولة الثالثة. ولم أشأ أن أشير إليه حتى لا أشوش أو أربك مسار تفكيرنا وفهمنا للأمور، و لكن الآن و بعد أن استوفينا جولتنا الرابعة، أظن أن الوقت قد حان لأن أفصح عنه.</p>
+
+<p>تذكرون سادتي أنه عندما قمنا بإنشاء أو خلق الكائن Person فعلنا ذلك من خلال التعليمة:</p> 
+
+<pre>Person := TPerson.Create;</pre>
+
+<p>وكما تذكرون أيضا، فقد أشرنا إلى أن الكائن الذي ينشأ يجب أن يتم إتلافه بعد الانتهاء من استخدامه.</p>
+
+<p><b>OK، كقاعدة ذهبية : عند خلق أي كائن يجب أن يغلّف الكود الخاص بالتعامل مع هذا الكائن ضمن حائط try…finally وذلك كالتالي:</b></p>
+
+<div class="div-code"><pre>
+  Person := TPerson.Create;
+
+  <span class="k">try</span>
+    Person.FirstName := <span class="s">'Ahmad'</span>;
+    Person.LastName := <span class="s">'Hamza'</span>;
+    Person.BirthDate := EncodeDate(1980, 3, 15);
+
+    ShowPerson(Person);
+
+  <span class="k">finally</span>
+    Person.Free;
+  <span class="k">end</span>;
+</pre></div>
+
+<p>بهذا نضمن أنه إذا حدث أي خطأ عند استخدامنا للكائن Person فإن برنامجنا لن يقفز من مكان الخطأ إلى خارج الإجرائية؛ بل يستمر ويذهب إلى التعليمات تحت قسم finally ليقوم بإزالة هذا الكائن ويحرر الذاكرة منه. سواء حدث خطأ أم لم يحدث.</p>
+
+<h2>شيء من الفلسفة</h2>
+
+<p>بعد أن أخذنا و بطريقة برمجية فكرة عن مفاهيم المنحى للكائن، لنسرد هنا بعضا من المصطلحات الخاصة بهذا المجال. ولتعذرني أخي القارئ فسوف يكون في حديثنا بعض الفلسفة، فأرجو منك أن تخلع T-Shirt البرمجة و تلبس عباءة الفلسفة، و تحمل معي قليلا.</p>  
+<p><b>Entity</b></p>
+<p>بمعنى كينونة، أو كيان أو وجود ويقصد به أي شيء في غير عالم البرمجة سواء كان هذا الشيء مادي أو معنوي. في مثالنا السابق كان الأستاذ "أحمد حمزة" هو إنسان بشحمه و لحمه يأكل و يتنفس و يمشي في الأسواق، مثله مثل غيره ممن هو إنسان، إذن كلمة إنسان تعبر عن مفهوم تجريدي يجمع كل من هو بني آدم ، فيمكن القول أن "أحمد حمزة" هو entity كينونة، وأن إنسان كينونة أيضا لكن بمفهوم تجريدي أعلى.</p>
+<p><b>Class</b></p>
+<p>بمعنى صنفية، وهي إطار تجريدي يضم الكينونات التي نرى أنها تتشابه في سماتها و تصرفاتها، الأخ "أحمد حمزة" رأيناه يشبه في شكله و تصرفاته أفرادا آخرين مثل "علي" و "إسماعيل"، عليه يمكن أن نضمهم تحت مسمى واحد و هو إنسان أو شخص، فأحمد إنسان وعلي إنسان وإسماعيل كذلك، هذا المُسمّى الموحد الذي يجمع بينهم نحدده أكثر برمجيا ونقول عنه صنفية class ونسمي هذه الصنفية TPerson، و نحدد في هذه الصنفية العناصر التي نرى أنها تجمع بين هؤلاء الكينونات أو التي تشكل مفهوم إنسان، في مثالنا السابق كانت رؤيتنا ضيقة، وحددنا فقط ثلاثة أو أربعة عناصر تجمع بين هؤلاء الأفراد أو يضمها مفهوم إنسان مثل  FirstName و LastName ، ووضعناها داخل هذه الصنفية.</p>
+<p><b>Object</b></p>
+<p>وتعني كائن أو ماهية، و الكائن هنا هو وجود برمجي، فبعد ما رسمنا إطارا لصنفية TPerson ، نقوم باستحضار أو تجسيد كائن برمجي من نفس الفصيلة أو الصنفية فنقول Person := TPerson.Create ثم حددنا أن هذا الكائن البرمجي إسمه الأول “أحمد” وإسمه الثاني "حمزة". بحسب الخصائص أو العناصر التي أطرناها في الصنفية. الكائن Person الذي إسمه الأول "أحمد" وإسمه الثاني "حمزة" هو كائن برمجي، من فصيلة أو صنفية TPerson يعيش في عالمنا البرمجي أي برنامجنا، وأردنا به أن يمثل السيد "أحمد حمزة" الحقيقي الذي يعيش في أرض الواقع.</p>
+
+<h2>الجولة القادمة</h2>
+<p>الجولات القادمة ستكون في الجزء الثاني من هذه المقالة إن شاء الله، و فيها سنتوسع في الحديث عن الصنفيات، من ذلك كيفية إنشاء صنفية مشتقة من صنفية أخرى، وخيارات لإستخدام الخصائص والمناهج، كذلك كيفية حفظ واستراجاع البيانات الخاصة بالكائنات في برنامجنا.</p>
+
+
+<h2>أخذ و رد</h2>
+<p>يمكنكم إخوتي الكرام طرح أية استفسارات تخص ماورد في هذا المقالة لمناقشتها سويا قي قسم التعليقات أدناه.</p>
+<p>إذا أحسستم أثناء قرائتكم لهذا المقال بوجود أي غموض أو لبس أو عدم وضوح كاف، أو إطالة زائدة، يرجى الإشارة إلى ذلك، و تحديد الموضوع أو الجزء الذي يعاني من أي عيب حتى يتم تعديله و تحسينه. أيضا إذا كان لديكم أي اقتراح أو ملاحظة ستسهم في زيادة توضيح المفاهيم التي طرحت في هذه المقالة فلا تترددون في طرحها.</p>
+<p>أيضا إذا وجدتم أية أخطاء ضمن طرحنا لمفاهيم المنحى للكائن؛ فإني أرجوكم أن تقوموا بالتنبيه إليها حتى يتم تصحيحها فورا.</p> 
+
+<p>مرفق مع المقالة الكود البرمجي الذي استخدمناه في هذه المقالة مقسم حسب كل جولة.</p>
+  <div align="left" >
+  <a href ="https://github.com/shagrouni/oo-step-by-step">
+  الملفات المصدرية للمشروع</a>
+  </div>
+<hr />
+<h2>المنحى للكائن في صور</h2>
+<table style="font-size: 22px;" >
+        <tr>
+            <td align="left"><img alt="" src="oo1.png" />
+            </td>
+            <td><pre>TPerson = Class</pre> 
+                 <p>الصنفية TPerson عبارة عن قالب</p>
+            </td>
+        </tr>
+        <tr>
+            <td align="left"><img alt="" src="oo2.png" />
+            </td>
+            <td><pre>
+<span class="k">var</span>
+  Person: TPerson
+</pre>
+المتغير Person من نوع الصنفية TPerson
+جسم ميت
+            </td>
+        </tr>
+        <tr>
+            <td align="left"><img alt="" src="oo3.png" />
+            </td>
+            <td><pre>Person := TPerson.Create</pre>
+                     Person صار كائنا حيا Object له مكان خاص به في الذاكرة
+            </td>
+        </tr>
+        <tr>
+            <td align="left"><img alt="" src="oo4.png" />
+            </td>
+            <td><pre>Person.FirstName := ‘xxxx’</pre>
+الكائن Person بعد مزيد من التحديد لخصائصه
+
+            </td>
+        </tr>
+        <tr>
+            <td align="left"><img alt="" src="oo2.png" />
+            </td>
+            <td><pre>Person.Free</pre>
+الكائن Person بعد إماتـته وعودته لمجرد متغير
+
+            </td>
+        </tr>
+</table>
+
+
+  
+  <p>&nbsp;</p>
+<hr />
+<!--   -->
+
+  <p>&nbsp;</p>
+<div id="disqus_thread">
+      <script>
+          var disqus_config = function () {
+            this.page.title = "البرمجة بالمنحى الكائني 1"
+            this.page.url = "http://shagrouni.github.io/oo-step-by-step/index.html";
+            this.page.identifier = "shagrouni.github.io/oo-step-by-step/index.html";
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            s.src = '//shagrouni.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+      </script>
+        <noscript>Please enable JavaScript to view the 
+        <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+          
+    
+          <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-74950849-1', 'auto');
+            ga('send', 'pageview');
+         </script>
+         <script id="dsq-count-scr" src="http://shagrouni.disqus.com/count.js" async></script>
+</div> <!-- Article -->
+
+</center>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+
+
+</body>
+</html>
