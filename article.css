@@ -30,11 +30,13 @@ h1{
   font-weight:600;
 }
 
-
+.c
+{
+  color: forestgreen;
+}
 .comment
 {
   color: forestgreen;
-  
 }
 .div-code{
   font-family: 'Consolas','Courier New';
@@ -47,6 +49,16 @@ h1{
   padding: 10px;
 }
 pre
+{
+  padding-left:initial;
+  font-family: 'Consolas','Courier New';
+  direction: ltr;
+  color: black;
+  font-size:large;
+  font-size: 17px;
+  text-align: left; 
+}
+code
 {
   padding-left:initial;
   font-family: 'Consolas','Courier New';
@@ -107,3 +119,4 @@ A:hover {
 .post-date {
   color: #8a8a8a;
 }
+
