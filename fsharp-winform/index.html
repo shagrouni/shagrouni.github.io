@@ -516,7 +516,7 @@ btReverse.Click.Add(x.Reverse)
     <span style="color:blue;">member</span>&nbsp;<span style="color:blue;">private</span>&nbsp;x.Reverse&nbsp;_
 <b>
       <span style="color:blue;">let rec</span> reverseChars s newText =
-        <span style="color:blue;">match</span> s <span style="color:blue;">with</span>                                      <span style="color:green;">//(1)</span>
+        <span style="color:blue;">match</span> s <span style="color:blue;">with</span>                                     <span style="color:green;">//(1)</span>
         |<span style="color:#a31515;">&quot;&quot;</span>&nbsp;<span style="color:blue;">-&gt;</span>&nbsp;newText                                   <span style="color:green;">//(2)</span>
         |_  <span style="color:blue;">-&gt;</span> reverseChars s.[1..]&nbsp;(s.[0..0] + newText) <span style="color:green;">//(3)</span>
 </b>
