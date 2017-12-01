@@ -857,7 +857,7 @@ f.Controls.Add(btn)
 
 <h3>خاتمة</h3>
 <p>لم أستطع أن أخرج بخاتمة ترضيني لهذا المقال، لكن أثناء تفكيري في ذلك؛ خطر على بالي هذا السؤال:</p>
-<p>كم مرّة وردت كلمة دالّة أو دالّية في هذه المقالة؟</p>
+<p>كم مرّة وردت كلمة F# أو دالّية في هذه المقالة؟</p>
 <p>لمعرفة ذلك، قمت بحفظ محتوى هذه المقالة في ملف نصي، ثم نفذت التعابير التالية:</p>
 
 	
@@ -867,7 +867,7 @@ f.Controls.Add(btn)
 <span style="color:blue;">open</span> System.IO
 
 <span style="color:blue;">let</span> s = <span style="color:#2b91af;">File</span>.ReadAllText(<span style="color:#a31515;">@&quot;C:\Trash\article.txt&quot;</span>)
-s.Split([|<span style="color:#a31515;">&#39; &#39;</span>|]) |&gt;&nbsp;<span style="color:#2b91af;">Array</span>.filter (<span style="color:blue;">fun</span> x <span style="color:blue;">-&gt;</span> x.Contains(<span style="color:#a31515;">&quot;دال&quot;</span>)) |&gt; <span style="color:#2b91af;">Array</span>.length
+s.Split([|<span style="color:#a31515;">&#39; &#39;</span>|]) |&gt;&nbsp;<span style="color:#2b91af;">Array</span>.filter (<span style="color:blue;">fun</span> x <span style="color:blue;">-&gt;</span> x.Contains(<span style="color:#a31515;">&quot;F#&quot;</span>)) |&gt; <span style="color:#2b91af;">Array</span>.length
 </pre>
 
 </div>
@@ -875,7 +875,7 @@ s.Split([|<span style="color:#a31515;">&#39; &#39;</span>|]) |&gt;&nbsp;<span st
 
 <div class="div-code">
 <pre>
-  val it : int = 163
+  val it : int = 47
 </pre>
 </div>
 
