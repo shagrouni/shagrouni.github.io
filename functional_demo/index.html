@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html dir="rtl">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link href="../article.css" type="text/css" rel="stylesheet" />
+  
+    <title>الدالة function كمواطن درجة أولى</title>
+
+    <meta name="keywords" content="f#, برمجة,  دروس برمجة, البرمجة الدالية, كورس" />
+    <meta name="description" content="العمليات التي تتم على الدالة في اللغات البرمجية التي تدعم المفايم الدالية" />
+</head>
+<body>
+
+
+
+  <center>
+  <a href ="../index.html">
+  <img alt="" src="sky.jpeg" /></a>
+  <div class="div-article">  
+<table style="width: 100%;">
+        <tr>
+            <td>
+<h1>الدالة function كمواطن درجة أولى</h1>  
+            <td align="left" >
+
+<span style="font-size: 28px; font-weight: bold;">خالد الشقروني&nbsp;&nbsp;&nbsp;</span>14 06 2024
+            </td>
+        </tr>
+    </table>
+
+
+    <p>في لغات البرمجة الدالية واللغات التي تدعم المفاهيم الدالية <span dir="ltr">functional concepts</span> عموما، تكون الدالّة أو ال Function مواطن درجة أولى <span dir="ltr">(first class citizen)</span>، ويقال عنها أيضا دالة مستوى أعلى <span dir="ltr">higher-order function (HOF)</span></p>
+
+    <p>ما معنى أن تكون الدالة و غيرها مواطن درجة أولى وذات مستوى أعلى في لغات البرمجة؟</p>
+    <p>سنبدأ بالشرح العملي ؛ سوف نستخدم لغة <span dir="ltr">F#</span> لشرح المفاهيم الخاصة بالدالة، وقد اخترت هذه اللغة لبساطتها و وضوحها في تبيان المفاهيم التي سنتعرّف علها، مع هذا؛ قمت باعداد نسخ لهذه الأمثلة بلغات أخرى للمقارنة ولمزيد من الاستيعاب، تم إعدادها بلغة Python ولغة Go ولغة Rust. (تجدون الرابط لها أدناه).</p>
+    <p>لنبدأ،</p>
+    <p>الصيغة الأبسط لتعريف دالة function هي:</p>
+    <div class="div-code"><pre>let add x y = 
+   x + y</pre></div>
+    
+  <p>إسم الدالة هو add، وبها محددان parameters وهما x و y، وبعد علامة = يكون جسم الدالة وهو x + y ولأن x + y هو التعبير expression الوحيد والأخير في جسم الدالة، فسيكون ناتج هذا التعبير هي القيمة التي ترجعها الدالة.</p>
+  <p>لاحظ أننا لا نحتاج لوضع أمر return أو result حيث أن آخر تعبير في الدالة سيتم اعتباره قيمة الدالة المرتجعة .</p>
+  <p>في <span dir="ltr">F#</span> (والعديد من اللغات الأخرى) يمكن الاستغناء عن تحديد نوع البيانات صراحة explicitly وجعل اللغة تستنتج &nbsp;أو تستدل inference على نوع البيانات ضمنيا implicitly ، لذلك إذا أردنا تحديد نوع البيانات صراحة في الدالة فستكون الدالة كالتالي:</p>
+
+  <div class="div-code"><pre>let add (x: int)(y: int): int =
+   x + y</pre></div>
+  
+   <p>لاحظ أننا لا نحتاج لوضع أمر return أو result حيث أن آخر تعبير في الدالة سيتم اعتباره قيمة الدالة المرتجعة ، وسنلاحظ نفس الأمر في لغة Rust.</p>
+   <p>مناداة هذه الدالة واستدعائها تتم بالتعبير التالي:</p>
+   
+   <div class="div-code"><pre>let a = add 1 1</pre></div>
+   
+   <p>على نفس المنوال، يمكننا أيضا صنع دالة أخرى ترجع حصيلة ضرب رقمين (سنحتاجها لاحقا):</p>
+   <div class="div-code"><pre>let multiply x y =
+   x * y </pre></div>
+
+
+   <h2>1- تخصيص دالة لمعرّف (متغيّر)</h2>
+  
+  <p>في اللغات الدالية يمكن تخصيص معرّف identifier (أو متغيّر variable) للدالة، فنقول مثلا:</p>
+  <div class="div-code"><pre>let my_add = add</pre></div>
+    <p>هنا تم تخصيص الدالة للمعرّف my_add ، وبإمكان المعرّف أن يقوم مقام الدالة، ونتحصّل على نفس النتيجة.</p>
+  <div class="div-code"><pre>let aa = my_add 1 1</pre></div>
+  
+  
+  <p><strong>الصيغة الأصلية للدالة:</strong></p>
+  <p>صيغة الدالة التي رأيناها سابقا:</p>
+  <div class="div-code"><pre>let add x y = x + y</pre></div>
+<p>&nbsp;</p>
+<p>هي صيغة مُحلاة syntactic sugar أي أنها صيغة محوّرة عن الصيغة الأصلية من أجل سهولة الاستخدام، &nbsp;أما الصيغة الأصلية فهي:</p>
+<div class="div-code"><pre>let add = fun x y = x + y</pre></div>
+
+
+<p>add هنا سيكون معرّف (متغيّر) تم تخصيص قيمة له، القيمة هنا دالة ليس لها اسم في حد ذاتها، ويشار للدالة في لغة <span dir="ltr">F#</span> ب fun. بعض اللغات تشير إليها بكلمة lambda وأخرى تشير إليها بكلمة anonymous (بعض محررات الكود تكتب العلامة &lambda; &nbsp;بدلا من &nbsp;lambda).</p>
+<p>إذا دالة لامبدا أو الدالة عديمة الإسم anonymous هي هيكل لدالة بدون إسم.</p>
+<p>ولأنها دالة مكتملة يمكننا مناداتها ككتلة واحدة مباشرة مثل:</p>
+<div class="div-code"><pre>let c = (fun x y = x + y) 3 3</pre></div>
+<p>والتي تعطينا ناتج جمع x و y أي 6.</p>
+
+
+<h2>2- تمرير دالة كمعطى argument</h2>
+
+<p>الدالة أيضا يمكن لها أن تستقبل دالة كمعطى argument فمثلا؛ الدالة التالية تستقبل ثلاث معطيات، الأول هو دالة، والثاني والثالث قيمتان سنفترض أنهما من نوع int (حسب مناداتها لاحقا)</p>
+<div class="div-code"><pre>let ApplyFunc f x y =
+   f x y</pre></div>
+<p>حيث تقوم الدالة بتطبيق الدالة f التي استقبلتها على x و y أي : f(x,y)</p>
+<p>ويمكن مناداتها كالتالي:</p>
+<div class="div-code"><pre>let d = ApplyFunc add 5 5</pre></div>
+
+<p>حيث مرّرنا لها الدالة add التي سبق تعريفها، فتقوم بتطبيق الدالة add على الرقمين 5 و 5 لتعطي الناتج 10. يمكن أيضا أن نمرر لها دالة أخرى، مثل multiply مع الرقمين 6 و 6 فتعطي لنا الناتج 36 :</p>
+<div class="div-code"><pre>let e = ApplyFunc multiply 6 6</pre></div>
+
+
+<p>يمكن أيضا تمرير هيكل دالة بالكامل بدلا من إسمها فقط مثل:</p>
+<div class="div-code"><pre>let f = ApplyFunc (fun x y = x * y + 1) 7 7</pre></div>
+
+<p>فتقوم بتطبيق الدالة التي استقبلتها على الرقمين 7 و 7، أي 7  7 ثم إضافة 1 ، لتعطي الناتج 50.</p>
+
+<h2>3- إرجاع دالة كقيمة</h2>
+
+<p>الدالة يمكن لها أن ترجع دالة جديدة كقيمة . فمثلا الدالة التالية تقوم باختبار المعطى x فإن كان يساوي a ؛ تردّ دالة تضيف رقمين، غير ذلك تردّ دالّة أخرى تضرب رقمين:</p>
+<div class="div-code"><pre>let returnFunc x =
+   if x == &lsquo;a&rsquo; then
+      fun x y = x + y
+   else
+      fun x y = x * y</pre></div>
+<p>ويمكن استدعاؤها كالتالي:</p>
+<div class="div-code"><pre>let myFun = returnFunc a
+let g = myFun 8 6</pre></div>
+<p>الناتج سيكون 14</p>
+
+<h2>الخلاصة</h2>
+<p>إذا، تكون الدالة مواطن درجة أولى في اللغة البرمجية عندما يكون متاحا في اللغة:</p>
+<ul>
+<li>تخصيص الدالة لمعرّف أو متغيّر</li>
+<li>أن تستقبل الدالة دالة أخرى كمُعطى argument.</li>
+<li>أن تقوم الدالّة بارجاع دالة كناتج لها.</li>
+</ul>
+<p>وتكون الدالة عالية المستوى higher-order function في حالة إمكانية القيام بالنقطتين الأخيرتين.</p>
+
+<p>كل الأمثلة الوارد أعلاه موجودة في برنامج <span dir="ltr">F#</span> قابل للتشغيل. كما توجد نسخ أخرى للبرنامج قابلة للتنفيذ والتشغيل بلغات Go و Rust و Python</p>
+<p>روابط ملفات البرنامج في:</p>
+
+  <div align="right" >                      
+  <a href ="https://github.com/shagrouni/functionl_demo">
+  الملفات المصدرية للمشروع</a>
+  </div>
+  <p>&nbsp;</p>
+<hr />
+<!--   -->
+
+  <p>&nbsp;</p>
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+    this.page.title = "الدالة function كمواطن درجة أولى"
+    this.page.url = "http://shagrouni.github.io/functionl_demo/index.html";
+    this.page.identifier = "shagrouni.github.io/functionl_demo/index.html";
+};
+(function() {
+    var d = document, s = d.createElement('script');
+    s.src = '//shagrouni.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+    </div>
+    
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-74950849-1', 'auto');
+  ga('send', 'pageview');
+</script>
+    <script id="dsq-count-scr" src="http://shagrouni.disqus.com/count.js" async></script>
+</div> <!-- Article -->
+</center>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+
+
+</body>
+</html>
