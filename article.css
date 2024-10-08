@@ -1,4 +1,4 @@
-﻿body
+body
 { direction:rtl;
   font-family: Calibri, Verdana; 
   MARGIN-LEFT: 10px;
@@ -10,6 +10,7 @@
 }
 p {font-size: 22px;
 }
+
 li {font-size: 22px;
 }
 h1{
@@ -69,7 +70,7 @@ code
   direction: ltr;
   color: black;
   font-size:large;
-  font-size: 19px;
+  font-size: 17px;
   text-align: left; 
 }
 .div-note{
@@ -123,6 +124,7 @@ A:hover {
 .post-date {
   color: #8a8a8a;
 }
+
 table {
   font-size: 20px;
   border-collapse: collapse;
