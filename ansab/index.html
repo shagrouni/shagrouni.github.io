@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+<!--	<link href="../article.css" type="text/css" rel="stylesheet" />  -->
+    <title>نظام أنساب</title>
+    <style>
+        
+		body {
+            font-family: Calibri, Verdana, 'Segoe UI', Tahoma, Geneva, sans-serif;
+			font-size: 22px;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center; 
+            padding: 20px;
+			
+        }
+		
+
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+			
+        }
+
+        .book-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .book-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-item img {
+            width: 120px; /* حجم الصورة المصغرة */
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .book-title {
+            display: block;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .book-title:hover {
+            color: #007bff;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+     
+	
+
+	
+    </style>
+</head>
+<body>
+
+  <center>
+  <a href ="../index.html">
+  <img alt="" src="../sky.jpg" /></a>
+  <div class="div-article">  
+
+<h1  align=right>نظام أنساب</h1>
+<p align=right>وثائق</p>
+
+<div class="book-list">
+    
+
+    <div class="book-item">
+	    
+	    <a href="ansab_about.pdf">
+        <img src="ansab_info_cover_s.jpg" alt="غلاف الكتاب"> </a>
+        <a href="ansab_about.pdf" class="book-title">نظام أنساب</a>
+    </div>
+
+    <div class="book-item">
+	    <a href="ansab_tutorial.pdf">
+        <img src="ansab_tutorial_cover_s.jpg"> </a>
+        <a href="ansab_tutorial.pdf" class="book-title">دليل استخدام نظام أنساب</a>
+       
+    </div>
+
+
+
+</div>
+
+</body>
+</html>
